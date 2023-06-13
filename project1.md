@@ -30,7 +30,7 @@ My first milestone was completely assembling the cat body board. I inserted the 
 
 # Schematics 
 
-![Schematics](schematic1.jpg)
+![Schematics](schematic1.png)
 
 # Bill of Materials
 Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
