@@ -192,10 +192,17 @@ Don't forget to place the link of where to buy each component inside the quotati
 |:--:|:--:|:--:|:--:|
 | Micro-USB to USB Cable (Generic) | For connection to Raspberry Pi | $2.10 | <a href="https://www.sparkfun.com/products/13244"> Link </a> |
 |:--:|:--:|:--:|:--:|
+| Mini Camera Case | Outside casing of the camera | $7.66 | <a href="https://thepihut.com/products/pi-zero-camera-case"> Link </a> |
 |:--:|:--:|:--:|:--:|
+| 4K HDMI Video Capture | Used to connect HDMI cable to laptop | $22.99 | <a href="https://www.amazon.com/Capture-Streaming-Broadcasting-Conference-Teaching/dp/B09FLN63B3/ref=sr_1_3?keywords=hdmi+video+capture&qid=1686867712&sr=8-3"> Link </a> |
 |:--:|:--:|:--:|:--:|
+| 2.5A Power Supply Bank | Used to connect power to the Pi | $19.95 | <a href="https://www.amazon.com/CanaKit-Raspberry-Supply-Adapter-Listed/dp/B00MARDJZ4/ref=sr_1_3?crid=1NS6SLR38G1AQ&keywords=canakit+2.5a+micro+usb+power+supply&qid=1686867784&sprefix=cana+kit+2.5a%2Caps%2C133&sr=8-3"> Link </a> |
 |:--:|:--:|:--:|:--:|
+| Micro USB OTG Hub | Used to connect more devices to the Pi | $14.99 | <a href="https://www.amazon.com/AuviPal-Adapter-Playstation-Classic-Raspberry/dp/B083WML1XB/ref=sr_1_3?crid=3IB7WWRWLGLVF&keywords=micro+usb+otg+hub&qid=1686867991&sprefix=micro+usb+otg+hub%2Caps%2C139&sr=8-3"> Link </a> |
 |:--:|:--:|:--:|:--:|
+| Amazon Basics Mini-HDMI to HDMI Adapter Cable | Used to connect to the display | $8.79 | <a href="https://www.amazon.com/AmazonBasics-High-Speed-Mini-HDMI-Adapter-Cable/dp/B014I8UEGY/ref=sr_1_5?crid=TYOCNK03XAZK&keywords=mini-hdmi+to+hdmi+tv&qid=1686868083&sprefix=mini-hdmi+to+hdmi+tv%2Caps%2C134&sr=8-5"> Link </a> |
+|:--:|:--:|:--:|:--:|
+| Micro SD Card | Transfer Raspberry Pi data | $17.09 | <a href="https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1/ref=sr_1_4?crid=3GM706GDFOWJW&keywords=micro+sd+card&qid=1686869609&s=electronics&sprefix=micro+sd+card%2Celectronics%2C145&sr=1-4"> Link </a> |
 |:--:|:--:|:--:|:--:|
 
 
