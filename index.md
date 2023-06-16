@@ -182,25 +182,15 @@ def sendEmail(image):
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
 | Raspberry Pi Zero Wireless | Core of the project | $47.98 | <a href="https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX/ref=sr_1_4?crid=3B0E18NIUI98U&keywords=raspberry+pi+zero+wireless&qid=1686867252&sprefix=raspberry+pi+zero+wireles%2Caps%2C142&sr=8-4"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Raspberry Pi Camera Module | Camera for video/pictures | $12.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Module-1080P/dp/B07RWCGX5K/ref=sr_1_2?crid=2KYR896ILMK3E&keywords=raspberry+pi+camera+module+case+x0026amufb&qid=1686867858&sprefix=raspberry+pi+camera+module+case+x0026amufb%2Caps%2C125&sr=8-2"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Adafruit Raspberry Pi Zero Camera Cable | Needed to replace the cable that comes with the camera module | $8.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Ribbon-Extension/dp/B085RW9K13/ref=sr_1_3?crid=WTTYEX49MHKT&keywords=raspberry+pi+zero+camera+cable&qid=1686867551&sprefix=raspberry+pi+zero+camera+cabl%2Caps%2C134&sr=8-3"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Micro-USB to USB Cable (Generic) | For connection to Raspberry Pi | $2.10 | <a href="https://www.sparkfun.com/products/13244"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Mini Camera Case | Outside casing of the camera | $7.66 | <a href="https://thepihut.com/products/pi-zero-camera-case"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | 4K HDMI Video Capture | Used to connect HDMI cable to laptop | $22.99 | <a href="https://www.amazon.com/Capture-Streaming-Broadcasting-Conference-Teaching/dp/B09FLN63B3/ref=sr_1_3?keywords=hdmi+video+capture&qid=1686867712&sr=8-3"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | 2.5A Power Supply Bank | Used to connect power to the Pi | $19.95 | <a href="https://www.amazon.com/CanaKit-Raspberry-Supply-Adapter-Listed/dp/B00MARDJZ4/ref=sr_1_3?crid=1NS6SLR38G1AQ&keywords=canakit+2.5a+micro+usb+power+supply&qid=1686867784&sprefix=cana+kit+2.5a%2Caps%2C133&sr=8-3"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Micro USB OTG Hub | Used to connect more devices to the Pi | $14.99 | <a href="https://www.amazon.com/AuviPal-Adapter-Playstation-Classic-Raspberry/dp/B083WML1XB/ref=sr_1_3?crid=3IB7WWRWLGLVF&keywords=micro+usb+otg+hub&qid=1686867991&sprefix=micro+usb+otg+hub%2Caps%2C139&sr=8-3"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Amazon Basics Mini-HDMI to HDMI Adapter Cable | Used to connect to the display | $8.79 | <a href="https://www.amazon.com/AmazonBasics-High-Speed-Mini-HDMI-Adapter-Cable/dp/B014I8UEGY/ref=sr_1_5?crid=TYOCNK03XAZK&keywords=mini-hdmi+to+hdmi+tv&qid=1686868083&sprefix=mini-hdmi+to+hdmi+tv%2Caps%2C134&sr=8-5"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | Micro SD Card | Transfer Raspberry Pi data | $17.09 | <a href="https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1/ref=sr_1_4?crid=3GM706GDFOWJW&keywords=micro+sd+card&qid=1686869609&s=electronics&sprefix=micro+sd+card%2Celectronics%2C145&sr=1-4"> Link </a> |
-|:--:|:--:|:--:|:--:|
 
 # Starter Project
 My first project was the Mini Cat Lamp. This project uses a simple circuit which was soldered together to create a mini cat that has an LED on its back that lights up when it becomes dark. In this project, I learned how to properly use tools for soldering and apply what I learned to a real-life creation. I first had to completely assemble the cat body board. I inserted the LED, transistor, resistor, and photoresistor into the cat body board. Then, I proceeded to use the soldering iron to solder each of these parts into the board. At first, I was unfamiliar with soldering, and so the initial soldering was messy, requiring me to clean up the solder left outside the pins. The most important part was the photoresistor, which would limit the electricity flow if light was detected. 
