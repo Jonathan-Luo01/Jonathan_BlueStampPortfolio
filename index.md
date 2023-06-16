@@ -184,11 +184,18 @@ Don't forget to place the link of where to buy each component inside the quotati
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+| Raspberry Pi Zero Wireless | Core of the project | $47.98 | <a href="https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX/ref=sr_1_4?crid=3B0E18NIUI98U&keywords=raspberry+pi+zero+wireless&qid=1686867252&sprefix=raspberry+pi+zero+wireles%2Caps%2C142&sr=8-4"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+| Raspberry Pi Camera Module | Camera for video/pictures | $12.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Module-1080P/dp/B07RWCGX5K/ref=sr_1_2?crid=2KYR896ILMK3E&keywords=raspberry+pi+camera+module+case+x0026amufb&qid=1686867858&sprefix=raspberry+pi+camera+module+case+x0026amufb%2Caps%2C125&sr=8-2"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+| Adafruit Raspberry Pi Zero Camera Cable | Needed to replace the cable that comes with the camera module | $8.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Ribbon-Extension/dp/B085RW9K13/ref=sr_1_3?crid=WTTYEX49MHKT&keywords=raspberry+pi+zero+camera+cable&qid=1686867551&sprefix=raspberry+pi+zero+camera+cabl%2Caps%2C134&sr=8-3"> Link </a> |
+|:--:|:--:|:--:|:--:|
+| Micro-USB to USB Cable (Generic) | For connection to Raspberry Pi | $2.10 | <a href="https://www.sparkfun.com/products/13244"> Link </a> |
+|:--:|:--:|:--:|:--:|
+|:--:|:--:|:--:|:--:|
+|:--:|:--:|:--:|:--:|
+|:--:|:--:|:--:|:--:|
+|:--:|:--:|:--:|:--:|
 |:--:|:--:|:--:|:--:|
 
 
