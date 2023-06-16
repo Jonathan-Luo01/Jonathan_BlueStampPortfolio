@@ -179,6 +179,20 @@ def sendEmail(image):
 ```
 
 # Bill of Materials
+Here's where you'll list the parts in your project. To add more rows, just copy and paste the example rows below.
+Don't forget to place the link of where to buy each component inside the quotation marks in the corresponding row after href =. Follow the guide [here]([url](https://www.markdownguide.org/extended-syntax/)) to learn how to customize this to your project needs. 
+
+| **Part** | **Note** | **Price** | **Link** |
+|:--:|:--:|:--:|:--:|
+| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+|:--:|:--:|:--:|:--:|
+| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+|:--:|:--:|:--:|:--:|
+| Item Name | What the item is used for | $Price | <a href="https://www.amazon.com/Arduino-A000066-ARDUINO-UNO-R3/dp/B008GRTSV6/"> Link </a> |
+|:--:|:--:|:--:|:--:|
+
+
+# Bill of Materials
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
 | Raspberry Pi Zero Wireless | Core of the project | $47.98 | <a href="https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX/ref=sr_1_4?crid=3B0E18NIUI98U&keywords=raspberry+pi+zero+wireless&qid=1686867252&sprefix=raspberry+pi+zero+wireles%2Caps%2C142&sr=8-4"> Link </a> |
