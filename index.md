@@ -18,7 +18,7 @@ My second milestone was assembling the base of the Mini Cat Lamp. I soldered the
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 # First Milestone
-My first milestone was setting the Raspberry Pi up and installing the necessary programs to run the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi to my laptop. I used openCV to detect objects in the video and send emails with an image of the object boxed in green. In this section  of the project, I faced the most challenges when I was first trying to set up the Raspberry Pi. The Raspberry Pi's plastic connector was broken, so it was unable to detect the camera module. Initially, the program on the SD card was corrupted, so I had to reinstall it. My next goal is to assemble the metal casing of the security camera. 
+My first milestone was setting the Raspberry Pi up and installing the necessary programs to run the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi to my laptop. I used openCV to detect objects in the video and send emails with an image of the object boxed in green. In this section  of the project, I faced the most challenges when I was first trying to set up the Raspberry Pi. The Raspberry Pi's plastic connector was broken, so it was unable to detect the camera module. Initially, the program on the SD card was corrupted, so I had to reinstall it. My next goal is to assemble the casing of the security camera. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -38,14 +38,14 @@ from flask_basicauth import BasicAuth
 import time
 import threading
 
-email_update_interval = 600 # sends an email only once in this time interval
+email_update_interval = 120 # sends an email only once in this time interval
 video_camera = VideoCamera(flip=True) # creates a camera object, flip vertically
 object_classifier = cv2.CascadeClassifier("models/fullbody_recognition_model.xml") # an opencv classifier
 
-# App Globals (do not edit)
+# App Globals 
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'CHANGE_ME_USERNAME'
-app.config['BASIC_AUTH_PASSWORD'] = 'CHANGE_ME_PLEASE'
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME'
+app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
 app.config['BASIC_AUTH_FORCE'] = True
 
 basic_auth = BasicAuth(app)
@@ -58,11 +58,11 @@ def check_for_objects():
 			frame, found_obj = video_camera.get_object(object_classifier)
 			if found_obj and (time.time() - last_epoch) > email_update_interval:
 				last_epoch = time.time()
-				print "Sending email..."
+				print("Sending email...")
 				sendEmail(frame)
-				print "done!"
+				print("done!")
 		except:
-			print "Error sending email: ", sys.exc_info()[0]
+			print ("Error sending email: "), sys.exc_info()[0]
 
 @app.route('/')
 @basic_auth.required
@@ -96,7 +96,7 @@ import numpy as np
 
 class VideoCamera(object):
     def __init__(self, flip = False):
-        self.vs = PiVideoStream().start()
+        self.vs = cv2.VideoCapture(0)
         self.flip = flip
         time.sleep(2.0)
 
@@ -109,13 +109,13 @@ class VideoCamera(object):
         return frame
 
     def get_frame(self):
-        frame = self.flip_if_needed(self.vs.read())
+        ret, frame = self.vs.read()
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
     def get_object(self, classifier):
         found_objects = False
-        frame = self.flip_if_needed(self.vs.read()).copy() 
+        ret, frame = self.vs.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         objects = classifier.detectMultiScale(
@@ -139,13 +139,13 @@ class VideoCamera(object):
 Mail:
 ```python
 import smtplib
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEImage import MIMEImage
+from email.mime.Multipart import MIMEMultipart
+from email.mime.Text import MIMEText
+from email.mime.Image import MIMEImage
 
 # Email you want to send the update from (only works with gmail)
 fromEmail = 'email@gmail.com'
-# You can generate an app password here to avoid storing your password in plain text
+# You have to generate an app password since Gmail does not allow less secure apps anymore
 # https://support.google.com/accounts/answer/185833?hl=en
 fromEmailPassword = 'password'
 
