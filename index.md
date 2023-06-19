@@ -24,9 +24,9 @@ My first milestone was setting the Raspberry Pi up and installing the necessary 
 
 <!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
 
-# Schematics 
+<!--- # Schematics 
 
-![Schematics](schematic1.png)
+![Schematics](schematic1.png) -->
 
 # Code
 Main:
