@@ -5,7 +5,7 @@ This project uses a Raspberry Pi Zero Wireless and a Raspberry Pi Camera Module 
 |:--:|:--:|:--:|:--:|
 | Jonathan L | Monta Vista High School | Computer Science | Incoming Junior
 
-![Headstone Image](project.jpg)
+<!--- ![Headstone Image](project.jpg) -->
   
 # Final Milestone
 <!--- My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera to the casing. -->
