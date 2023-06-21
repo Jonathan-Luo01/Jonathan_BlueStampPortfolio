@@ -8,13 +8,13 @@ This project uses a Raspberry Pi Zero Wireless and a Raspberry Pi Camera Module 
 <!--- ![Headstone Image](project.jpg) -->
   
 <!--- # Final Milestone
-My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera to the casing.
+My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 -->
 
 <!--- # Second Milestone
-My second milestone was assembling the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was learning how to use CAD to create a 3D model, but the rest of the process was relatively simplistic. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. 
+My second milestone was assembling the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape, but the rest of the process was relatively simplistic. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. 
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> 
 -->
@@ -22,7 +22,7 @@ My second milestone was assembling the casing of the security camera. Using Onsh
 # First Milestone
 My first milestone was setting the Raspberry Pi up and installing the necessary programs to run the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi to my laptop. I used openCV to detect objects in the video and send emails with an image of the object boxed in green. In this section  of the project, I faced the most challenges when I was first trying to set up the Raspberry Pi. The Raspberry Pi's plastic connector was broken, so it was unable to detect the camera module. Initially, the program on the SD card was corrupted, so I had to reinstall it. My next goal is to assemble the casing of the security camera. 
 
-<!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/CaCazFBhYKs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
+<iframe width="560" height="315" src="https://www.youtube.com/embed/gXoERpw7gXo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 <!--- # Schematics 
 
