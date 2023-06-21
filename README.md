@@ -1,1 +1,1 @@
-This repository is a template for documenting BlueStamp Engineering projects. Users should replace this text with a description of what their project is and what their repository holds. 
+This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, an email containing an image of the object will be sent.
