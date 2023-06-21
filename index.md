@@ -15,13 +15,15 @@ My final milestone was to completely assemble the Computer Vision Security Camer
 -->
 
 <!--- # Second Milestone
-My second milestone was assembling the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape, but the rest of the process was relatively simplistic. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. My next goal is to completely assemble the security camera by adding the Raspberry Pi and USB camera into the casing.
+My second milestone was creating the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was actually learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. My next goal is to completely assemble the security camera by adding the Raspberry Pi and USB camera into the casing.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> 
 -->
 
 # First Milestone
-My first milestone was setting the Raspberry Pi up and installing the necessary programs to run the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi to my laptop. I used openCV to detect objects in the video and send emails with an image of the object boxed in green. In this section  of the project, I faced the most challenges when I was first trying to set up the Raspberry Pi. The Raspberry Pi's plastic connector was broken, so it was unable to detect the camera module. Initially, the program on the SD card was corrupted, so I had to reinstall it. My next goal is to assemble the casing of the security camera. 
+My first milestone was setting the Raspberry Pi up and installing the necessary programs to run the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi to my laptop. I used openCV to detect objects in the video and send emails with an image of the object boxed in green. In this section of the project, I faced the most challenges when I was first trying to set up the Raspberry Pi. It took around ten hours to install openCV and the necessary libraries needed to actually start programming. The Raspberry Pi Zero was not able to handle the latest versions of the software, and so I had to search for a compatible older version of openCV. Additionally, when I first installed the Raspberry Pi OS on the SD card, it was corrupted, and so I had to reinstall it again. 
+
+Another big problem was the Raspberry Pi's plastic connector, which broke before I could use it. I tried to hot-glue the camera cable to the connector, but the Pi was still unable to detect the Pi Camera module, so I settled for using the USB camera. Since I changed the camera I was using, I had to modify the code to use the USB camera instead of the Pi Camera. Instead of using PiVideoStream, I used the default functions of cv2 for the USB camera. I also need to redesign the outer casing I was using, since the larger USB camera would no longer fit in the previous camera case, and so my next goal is to create a 3D model for the new componenents.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/gXoERpw7gXo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
@@ -185,25 +187,25 @@ def sendEmail(image):
 
 | **Part** | **Note** | **Price** | **Link** |
 |:--:|:--:|:--:|:--:|
-| Raspberry Pi Zero Wireless | Core of the project | $47.98 | <a href="https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX/ref=sr_1_4?crid=3B0E18NIUI98U&keywords=raspberry+pi+zero+wireless&qid=1686867252&sprefix=raspberry+pi+zero+wireles%2Caps%2C142&sr=8-4"> Link </a> |
+| Raspberry Pi Zero Wireless | Core of the project | $47.98 | <a href="https://www.amazon.com/Raspberry-Pi-Zero-Wireless-model/dp/B06XFZC3BX"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Raspberry Pi Camera Module | Camera for video/pictures | $12.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Module-1080P/dp/B07RWCGX5K/ref=sr_1_2?crid=2KYR896ILMK3E&keywords=raspberry+pi+camera+module+case+x0026amufb&qid=1686867858&sprefix=raspberry+pi+camera+module+case+x0026amufb%2Caps%2C125&sr=8-2"> Link </a> |
+| USB Camera | Camera for video/pictures | $13.17 | <a href="https://us.amazon.com/Serounder-Microphone-Megapixel-Computer-Broadcasting/dp/B07P8Z3MSN"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Adafruit Raspberry Pi Zero Camera Cable | Needed to replace the cable that comes with the camera module | $8.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Ribbon-Extension/dp/B085RW9K13/ref=sr_1_3?crid=WTTYEX49MHKT&keywords=raspberry+pi+zero+camera+cable&qid=1686867551&sprefix=raspberry+pi+zero+camera+cabl%2Caps%2C134&sr=8-3"> Link </a> |
+| Adafruit Raspberry Pi Zero Camera Cable | Needed to replace the cable that comes with the camera module | $8.99 | <a href="https://www.amazon.com/Arducam-Raspberry-Camera-Ribbon-Extension/dp/B085RW9K13"> Link </a> |
 |:--:|:--:|:--:|:--:|
 | Micro-USB to USB Cable (Generic) | For connection to Raspberry Pi | $2.10 | <a href="https://www.sparkfun.com/products/13244"> Link </a> |
 |:--:|:--:|:--:|:--:|
 | Mini Camera Case | Outside casing of the camera | $7.66 | <a href="https://thepihut.com/products/pi-zero-camera-case"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| 4K HDMI Video Capture | Used to connect HDMI cable to laptop | $22.99 | <a href="https://www.amazon.com/Capture-Streaming-Broadcasting-Conference-Teaching/dp/B09FLN63B3/ref=sr_1_3?keywords=hdmi+video+capture&qid=1686867712&sr=8-3"> Link </a> |
+| 4K HDMI Video Capture | Used to connect HDMI cable to laptop | $22.99 | <a href="https://www.amazon.com/Capture-Streaming-Broadcasting-Conference-Teaching/dp/B09FLN63B3"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| 2.5A Power Supply Bank | Used to connect power to the Pi | $19.95 | <a href="https://www.amazon.com/CanaKit-Raspberry-Supply-Adapter-Listed/dp/B00MARDJZ4/ref=sr_1_3?crid=1NS6SLR38G1AQ&keywords=canakit+2.5a+micro+usb+power+supply&qid=1686867784&sprefix=cana+kit+2.5a%2Caps%2C133&sr=8-3"> Link </a> |
+| 2.5A Power Supply Bank | Used to connect power to the Pi | $19.95 | <a href="https://www.amazon.com/CanaKit-Raspberry-Supply-Adapter-Listed/dp/B00MARDJZ4"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Micro USB OTG Hub | Used to connect more devices to the Pi | $14.99 | <a href="https://www.amazon.com/AuviPal-Adapter-Playstation-Classic-Raspberry/dp/B083WML1XB/ref=sr_1_3?crid=3IB7WWRWLGLVF&keywords=micro+usb+otg+hub&qid=1686867991&sprefix=micro+usb+otg+hub%2Caps%2C139&sr=8-3"> Link </a> |
+| Micro USB OTG Hub | Used to connect more devices to the Pi | $14.99 | <a href="https://www.amazon.com/AuviPal-Adapter-Playstation-Classic-Raspberry/dp/B083WML1XB"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Amazon Basics Mini-HDMI to HDMI Adapter Cable | Used to connect to the display | $8.79 | <a href="https://www.amazon.com/AmazonBasics-High-Speed-Mini-HDMI-Adapter-Cable/dp/B014I8UEGY/ref=sr_1_5?crid=TYOCNK03XAZK&keywords=mini-hdmi+to+hdmi+tv&qid=1686868083&sprefix=mini-hdmi+to+hdmi+tv%2Caps%2C134&sr=8-5"> Link </a> |
+| Amazon Basics Mini-HDMI to HDMI Adapter Cable | Used to connect to the display | $8.79 | <a href="https://www.amazon.com/AmazonBasics-High-Speed-Mini-HDMI-Adapter-Cable/dp/B014I8UEGY"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Micro SD Card | Transfer Raspberry Pi data | $17.09 | <a href="https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1/ref=sr_1_4?crid=3GM706GDFOWJW&keywords=micro+sd+card&qid=1686869609&s=electronics&sprefix=micro+sd+card%2Celectronics%2C145&sr=1-4"> Link </a> |
+| Micro SD Card | Transfer Raspberry Pi data | $17.09 | <a href="https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1"> Link </a> |
 |:--:|:--:|:--:|:--:|
 
 # Starter Project
