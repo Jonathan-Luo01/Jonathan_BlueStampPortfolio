@@ -2,4 +2,6 @@
 ---
 
 @import "{{ site.theme }}";
-Background-image: url("project.jpg")
+.page-header {
+    background-image: url("project.jpg");
+}
