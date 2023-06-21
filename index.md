@@ -5,7 +5,8 @@ This project uses a Raspberry Pi Zero Wireless and a Raspberry Pi Camera Module 
 |:--:|:--:|:--:|:--:|
 | Jonathan L | Monta Vista High School | Computer Science | Incoming Junior
 
-<!--- ![Headstone Image](project.jpg) -->
+<!--- ![Headstone Image](headshot.png) -->
+<!--- ![Project Image](project.jpg) -->
   
 <!--- # Final Milestone
 My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing.
@@ -14,7 +15,7 @@ My final milestone was to completely assemble the Computer Vision Security Camer
 -->
 
 <!--- # Second Milestone
-My second milestone was assembling the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape, but the rest of the process was relatively simplistic. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. 
+My second milestone was assembling the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape, but the rest of the process was relatively simplistic. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. My next goal is to completely assemble the security camera by adding the Raspberry Pi and USB camera into the casing.
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> 
 -->
