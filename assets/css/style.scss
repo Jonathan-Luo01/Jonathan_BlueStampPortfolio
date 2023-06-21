@@ -4,8 +4,6 @@
 @import "{{ site.theme }}";
 
 .page-header {
-    color: #fff;
     text-align: center;
-    background-color: #4a148c;
-    background-image: url("background.jpg");
+    background-image: url("//background.jpg");
 }
