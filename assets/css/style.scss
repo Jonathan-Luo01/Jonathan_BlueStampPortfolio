@@ -19,24 +19,16 @@ html, body {
     background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
     background-size: 400% 400%;
     animation: gradient 15s ease infinite;
-}
 
-.background {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
-
-  mask-image: radial-gradient(
+    mask-image: radial-gradient(
     white 0%,
     white 30%,
     transparent 80%,
     transparent
   );
+    
 }
+
 
 .circle-container {
   $particleNum: 200;
