@@ -1,1 +1,1 @@
-Hi! I'm Jonathan. My project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Using Python and openCV, the camera detects objects in the video feed and sends an email containing an image of the object.
+Hi! I'm Jonathan. My project is the Computer Vision Security Camera. It uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Using Python and openCV, the camera detects objects in the video feed and sends an email containing an image of the object.
