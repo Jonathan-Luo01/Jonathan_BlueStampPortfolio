@@ -27,9 +27,14 @@ My first milestone was setting the Raspberry Pi up and installing the necessary 
 
 Another big problem was the Raspberry Pi's plastic connector, which broke before I could use it. I tried to hot-glue the camera cable to the connector, but the Pi was still unable to detect the Pi Camera module, so I settled for using the USB camera. Since I changed the camera I was using, I had to modify the code to use the USB camera instead of the Pi Camera. Instead of using PiVideoStream, I used the default functions of cv2 for the USB camera. I also need to redesign the outer casing I was using, since the larger USB camera would no longer fit in the previous camera case, and so my next goal is to create a 3D model for the new componenents.
 
-<!--- # Schematics 
+# Schematics 
+Camera:
 
-![Schematics](schematic1.png) -->
+![Schematics](camera_schematic.png) 
+
+Casing:
+
+![Schematics](casing_schematic.png) 
 
 # Code
 Main:
