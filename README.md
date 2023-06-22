@@ -1,1 +1,1 @@
-This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, an email containing an image of the object will be sent.
+Hi! I'm Jonathan. My project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Using Python and openCV, the camera detects objects in the video feed and sends an email containing an image of the object.
