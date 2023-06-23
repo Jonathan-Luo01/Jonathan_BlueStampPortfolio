@@ -1,5 +1,5 @@
 # Computer Vision Security Camera
-This project uses a Raspberry Pi Zero Wireless and a Raspberry Pi Camera Module to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, an email containing an image of the object will be sent. 
+This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, an email containing an image of the object will be sent. The user can also view the live video feed of the security camera if the Raspberry Pi and their personal device is connected to the same network. 
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
