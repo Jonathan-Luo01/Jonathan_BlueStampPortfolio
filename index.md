@@ -15,7 +15,7 @@ My final milestone was to completely assemble the Computer Vision Security Camer
 
 -->
 
- # Second Milestone
+# Second Milestone
  <!--- <iframe width="560" height="315" src="https://www.youtube.com/embed/y3VAmNlER5Y" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe> -->
  
 My second milestone was creating the casing of the security camera. Using Onshape, I created a 3D model of the exterior casing and added the holes needed to plug in the cables for the camera and the Raspberry Pi. The main difficulty was actually learning how to use CAD to create a 3D model and getting used to the different functions provided by Onshape. I also had to check the dimensions of the casing to make sure that it could be printed out correctly in the first attempt. However, when I printed the casing out, I forgot to account for the mini SD card inserted into the Raspberry Pi, since it added a few more millimeters of length. Since the holes created for each of the cables were too small, I had to sand the holes down with a file. To add on, the hole for the camera's cable was also too small, since I did not account for the width of the USB connector at the end of the cable. To solve this, I learned how to use the drill to create a larger hole in the back of the casing. My next goal is to completely assemble the security camera by adding the Raspberry Pi and USB camera into the casing.
