@@ -201,8 +201,6 @@ def sendEmail(image):
 |:--:|:--:|:--:|:--:|
 | Micro-USB to USB Cable (Generic) | For connection to Raspberry Pi | $2.10 | <a href="https://www.sparkfun.com/products/13244"> Link </a> |
 |:--:|:--:|:--:|:--:|
-| Mini Camera Case | Outside casing of the camera | $7.66 | <a href="https://thepihut.com/products/pi-zero-camera-case"> Link </a> |
-|:--:|:--:|:--:|:--:|
 | 4K HDMI Video Capture | Used to connect HDMI cable to laptop | $22.99 | <a href="https://www.amazon.com/Capture-Streaming-Broadcasting-Conference-Teaching/dp/B09FLN63B3"> Link </a> |
 |:--:|:--:|:--:|:--:|
 | 2.5A Power Supply Bank | Used to connect power to the Pi | $19.95 | <a href="https://www.amazon.com/CanaKit-Raspberry-Supply-Adapter-Listed/dp/B00MARDJZ4"> Link </a> |
