@@ -41,7 +41,8 @@ Casing:
 # Code
 Main:
 ```python
-import cv2
+# import libraries
+import cv2 
 import sys
 from mail import sendEmail
 from flask import Flask, render_template, Response
@@ -54,9 +55,9 @@ email_update_interval = 120 # sends an email only once in this time interval
 video_camera = VideoCamera(flip=True) # creates a camera object, flip vertically
 object_classifier = cv2.CascadeClassifier("models/fullbody_recognition_model.xml") # an opencv classifier
 
-# App Globals 
+# App Globals for viewing live video feed
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME'
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
 app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
 app.config['BASIC_AUTH_FORCE'] = True
 
@@ -68,7 +69,7 @@ def check_for_objects():
 	while True:
 		try:
 			frame, found_obj = video_camera.get_object(object_classifier)
-			if found_obj and (time.time() - last_epoch) > email_update_interval:
+			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
 				last_epoch = time.time()
 				print("Sending email...")
 				sendEmail(frame)
@@ -76,17 +77,20 @@ def check_for_objects():
 		except:
 			print ("Error sending email: "), sys.exc_info()[0]
 
+#launch basic server 
 @app.route('/')
-@basic_auth.required
+@basic_auth.required 
 def index():
     return render_template('index.html')
 
+#return frame
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
+#Generate video feed
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(video_camera),
@@ -96,34 +100,40 @@ if __name__ == '__main__':
     t = threading.Thread(target=check_for_objects, args=())
     t.daemon = True
     t.start()
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
 ```
 Camera:
 ```python
+#import libraries
 import cv2
 import imutils
 import time
 import numpy as np
 
 class VideoCamera(object):
+    #camera constructor
     def __init__(self, flip = False):
         self.vs = cv2.VideoCapture(0)
         self.flip = flip
         time.sleep(2.0)
 
+    #delete camera object
     def __del__(self):
         self.vs.stop()
 
+    #flips camera object
     def flip_if_needed(self, frame):
         if self.flip:
             return np.flip(frame, 0)
         return frame
 
+    #Return a single frame taken by the camera
     def get_frame(self):
         ret, frame = self.vs.read()
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
+    #Look for an object and return image
     def get_object(self, classifier):
         found_objects = False
         ret, frame = self.vs.read()
@@ -144,11 +154,12 @@ class VideoCamera(object):
         for (x, y, w, h) in objects:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
-        ret, jpeg = cv2.imencode('.jpg', frame)
+        ret, jpeg = cv2.imencode('.jpg', frame) 
         return (jpeg.tobytes(), found_objects)
 ```
 Mail:
 ```python
+#import libraries
 import smtplib
 from email.mime.Multipart import MIMEMultipart
 from email.mime.Text import MIMEText
@@ -172,19 +183,19 @@ def sendEmail(image):
 
 	msgAlternative = MIMEMultipart('alternative')
 	msgRoot.attach(msgAlternative)
-	msgText = MIMEText('Smart security cam found object')
-	msgAlternative.attach(msgText)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
 
 	msgText = MIMEText('<img src="cid:image1">', 'html')
 	msgAlternative.attach(msgText)
 
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
-	msgRoot.attach(msgImage)
+	msgRoot.attach(msgImage) #add the image taken
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
-	smtp.login(fromEmail, fromEmailPassword)
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 ```
