@@ -36,7 +36,7 @@ Camera:
 
 Casing:
 
-![Schematics](casing_schematic.png) 
+![Schematics](case_schematic.png) 
 
 # Code
 Main:
