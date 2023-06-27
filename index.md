@@ -11,7 +11,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 <!--- # Final Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing. In the beginning, I wasn't sure if I wanted to tape or glue the top of the case to the body. Taping it would make it easier to remove, but gluing it to the body would keep it more secure. In the end, I decided to tape the top of the casing to the rest of the case. To keep the USB camera from moving inside the case, I glued the front of the camera to the hole. 
+My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing. Initially, I was deciding between taping or gluing the top to the body of the case, but I eventually decided to use tape. To attach the camera to the case, I used super glue on the hole cut out for the camera and connected them together. I also secured the Raspberry Pi inside the case with tape. With this, the Computer Vision Security Camera was completely assembled. In this project, I learned how to set up a Raspberry Pi and install the necessary libraries such as openCV and numpy needed to run the code. I also grew more familiar with using the drill and creating a 3D model with CAD. I really enjoyed working on this project, and I learned a lot of new things in this experience!
 
 -->
 
