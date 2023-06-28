@@ -7,7 +7,100 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 
 <!--- ![Headstone Image](headshot.png) -->
 <!--- ![Project Image](project.jpg) -->
-  
+
+
+<!--- # Modifications 
+Here are each of the modifications I made to each class.
+Camera.py:
+I added this method to save a short video.
+```python
+   def get_video(self):
+ 	out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (int(self.vs.get(3)), int(self.vs.get(4))))
+  	t_end = time.time() + 20
+   	while(time.time() < t_end):
+    	    ret, frame = self.vs.read()
+
+  	    if ret == True:
+       		out.write(frame)
+
+  		cv2.imshow('frame', frame)
+    	    else:
+	 	break
+   	out.release()
+    	cv2.destroyAllWindows()
+```
+I also modified get_object to call get_video whenever an object was deectedd.
+```python
+   def get_object(self, classifier):
+        found_objects = False
+        ret, frame = self.vs.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        objects = classifier.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
+
+        if len(objects) > 0:
+            found_objects = True
+	    self.get_video()
+
+        # Draw a rectangle around the objects
+        for (x, y, w, h) in objects:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        ret, jpeg = cv2.imencode('.jpg', frame) 
+        return (jpeg.tobytes(), found_objects)
+```
+Mail.py:
+I imported a few more libraries to use for the video. Here are all the libraries I used:
+```python
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.image import MIMEImage
+from email.mime.application import MIMEApplication
+from email import encoders
+```
+Here are the modifications I made to sendEmail:
+```python
+def sendEmail(image):
+	video_file = MIMEBase('application', 'octet-stream')
+ 	video_file.set_payload(open('output.avi', "rb").read())
+
+  	encoders.encode_base64(video_file)
+   	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+   
+	msgRoot = MIMEMultipart('related')
+	msgRoot['Subject'] = 'Security Update'
+	msgRoot['From'] = fromEmail
+	msgRoot['To'] = toEmail
+	msgRoot.preamble = 'Raspberry pi security camera update'
+
+	msgAlternative = MIMEMultipart('alternative')
+	msgRoot.attach(msgAlternative)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
+
+	msgText = MIMEText('<img src="cid:image1">', 'html')
+	msgAlternative.attach(msgText)
+
+	msgImage = MIMEImage(image)
+	msgImage.add_header('Content-ID', '<image1>')
+	msgRoot.attach(msgImage) #add the image taken
+	msgRoot.attach(video_file)
+
+	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp.starttls()
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.quit()
+```
+-->
 <!--- # Final Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
