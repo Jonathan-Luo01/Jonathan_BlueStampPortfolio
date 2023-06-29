@@ -10,31 +10,32 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 
 
 <!--- # Modifications 
-Here are each of the modifications I made to each class.
+I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had all the functions of a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class.
+#pip install pyaudio
 Camera.py:
 I added this method to save a short video.
 ```python
    def get_video(self):
- 	out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (int(self.vs.get(3)), int(self.vs.get(4))))
+ 	out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (int(self.vs.get(3)), int(self.vs.get(4)))) #Create a VideoWriter object
   	t_end = time.time() + 20
-   	while(time.time() < t_end):
-    	    ret, frame = self.vs.read()
+   	while(time.time() < t_end): #loop for 20 seconds
+    	    ret, frame = self.vs.read() #read from camera
 
   	    if ret == True:
-       		out.write(frame)
+       		out.write(frame) #Add frame to the video
 
-  		cv2.imshow('frame', frame)
+  		cv2.imshow('frame', frame) #Display frame
     	    else:
 	 	break
-   	out.release()
-    	cv2.destroyAllWindows()
+   	out.release() #Release VideoWriter
+    	cv2.destroyAllWindows() #Deallocate data
 ```
-I also modified get_object to call get_video whenever an object was deectedd.
+I also modified get_object to call get_video whenever an object was detected.
 ```python
    def get_object(self, classifier):
-        found_objects = False
-        ret, frame = self.vs.read()
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        found_objects = False #initialize boolean
+        ret, frame = self.vs.read() #read from camera
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #set color
 
         objects = classifier.detectMultiScale(
             gray,
@@ -42,14 +43,14 @@ I also modified get_object to call get_video whenever an object was deectedd.
             minNeighbors=5,
             minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE
-        )
+        ) #use classifier to get array of detected objects
 
         if len(objects) > 0:
             found_objects = True
-	    self.get_video()
+	    self.get_video() #Call get_video() to create a video
 
         # Draw a rectangle around the objects
-        for (x, y, w, h) in objects:
+        for (x, y, w, h) in objects:  
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         ret, jpeg = cv2.imencode('.jpg', frame) 
@@ -72,7 +73,7 @@ def sendEmail(image):
 	video_file = MIMEBase('application', 'octet-stream')
  	video_file.set_payload(open('output.avi', "rb").read())
 
-  	encoders.encode_base64(video_file)
+  	encoders.encode_base64(video_file) 
    	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
    
 	msgRoot = MIMEMultipart('related')
@@ -101,12 +102,10 @@ def sendEmail(image):
 	smtp.quit()
 ```
 -->
-<!--- # Final Milestone
+# Final Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
-My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing. Initially, I was deciding between taping or gluing the top to the body of the case, but I eventually decided to use tape. To attach the camera to the case, I used super glue on the hole cut out for the camera and connected them together. I also secured the Raspberry Pi inside the case with tape. With this, the Computer Vision Security Camera was completely assembled. In this project, I learned how to set up a Raspberry Pi and install the necessary libraries such as openCV and numpy needed to run the code. I also grew more familiar with using the drill and creating a 3D model with CAD. I really enjoyed working on this project, and I learned a lot of new things in this experience!
-
--->
+My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing. Initially, I was deciding between taping or gluing the top to the body of the case, but I eventually decided to use tape. To attach the camera to the case, I used super glue on the hole cut out for the camera and connected them together. I also secured the Raspberry Pi inside the case with tape. With this, the Computer Vision Security Camera was completely assembled. In this project, I learned how to set up a Raspberry Pi and install the necessary libraries such as openCV and numpy needed to run the code. I also grew more familiar with using the drill and creating a 3D model with CAD. My next steps are to give the camera most of the functions of a modern security camera, such as having a speaker and microphone so the user can speak through the camera.
 
 # Second Milestone
 
