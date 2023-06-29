@@ -103,7 +103,7 @@ def sendEmail(image):
 ```
 
 # Final Milestone
-<iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/_5qJwmrPgkM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 My final milestone was to completely assemble the Computer Vision Security Camera by inserting the Raspberry Pi and USB camera inside the casing. Initially, I was deciding between taping or gluing the top to the body of the case, but I eventually decided to use tape. To attach the camera to the case, I used super glue on the hole cut out for the camera and connected them together. I also secured the Raspberry Pi inside the case with tape. With this, the Computer Vision Security Camera was completely assembled. In this project, I learned how to set up a Raspberry Pi and install the necessary libraries such as openCV and numpy needed to run the code. I also grew more familiar with using the drill and creating a 3D model with CAD. My next steps are to give the camera most of the functions of a modern security camera, such as having a speaker and microphone so the user can speak through the camera.
 
