@@ -9,7 +9,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 <!--- ![Project Image](project.jpg) -->
 
 
-<!--- # Modifications 
+# Modifications 
 I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had all the functions of a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class.
 #pip install pyaudio
 Camera.py:
@@ -101,7 +101,7 @@ def sendEmail(image):
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 ```
--->
+
 # Final Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/F7M7imOVGug" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
