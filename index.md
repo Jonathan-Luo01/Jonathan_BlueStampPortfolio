@@ -201,7 +201,7 @@ def record(video_camera, mic):
 		subprocess.call(cmd, shell = True)
 	else:
 		print('Normal Muxing..')
-		cmd = 'ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output.avi -pix_fmt yuv420p " + filename + ".avi"
+		cmd = "ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output.avi -pix_fmt yuv420p " + filename + ".avi"
 		subprocess.call(cmd, shell = True)
 
 	print("..")
