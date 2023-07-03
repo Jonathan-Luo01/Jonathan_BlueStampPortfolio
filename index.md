@@ -11,7 +11,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 
 # Modifications 
 I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had all the functions of a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
-<!--- pip install pyaudio -->
+
 Camera.py:
 I added this method to save a short video.
 ```python
@@ -24,7 +24,6 @@ I added this method to save a short video.
   	    if ret == True:
        		out.write(frame) #Add frame to the video
 
-  		cv2.imshow('frame', frame) #Display frame
     	    else:
 	 	break
    	out.release() #Release VideoWriter
@@ -71,7 +70,7 @@ Here are the modifications I made to sendEmail:
 ```python
 def sendEmail(image):
 	video_file = MIMEBase('application', 'octet-stream')
- 	video_file.set_payload(open('output.avi', "rb").read())
+ 	video_file.set_payload(open('output.avi', "rb").read()) #read from file
 
   	encoders.encode_base64(video_file) 
    	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
@@ -93,14 +92,137 @@ def sendEmail(image):
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
 	msgRoot.attach(msgImage) #add the image taken
-	msgRoot.attach(video_file)
+	msgRoot.attach(video_file) #attach video taken
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
 	smtp.login(fromEmail, fromEmailPassword) #access gmail
-	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string()) #send email
 	smtp.quit()
 ```
+Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and pip installed pyaudio.
+
+mic.py 
+```python
+import pyaudio 
+import wave
+import threading
+import time
+
+class Microphone():
+
+	def __init__(self):
+
+		self.open = True
+		self.frames_per_buffer = 1024
+		self.channels = 1
+		self.input_device_index
+		self.rate = 48000
+		self.format = pyaudio.paInt16
+		self.audio_filename = 'audio.wav'
+		self.audio = pyaudio.PyAudio()
+		#These parameters are different for each audio device.
+
+		#The following code reveals the parameters of your own device.
+  		'''
+		for i in range(self.audio.get_device_count()):
+			print(self.audio.get_device_info_by_index(i))
+		```
+
+		self.stream = self.audio.open(format=self.format,
+						channels = self.channels,
+						rate = self.rate,
+						input = True,
+						input_device_index = self.input_device_index,
+						frames_per_buffer = self.frames_per_buffer)
+		self.audio_frames = []
+
+	def get_audio(self):
+		self.stream.start_stream()
+		t_end = time.time() + 20
+		while(time.time() < t_end):
+			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False)
+			self.audio_frames.append(data)
+
+		self.stream.stop_stream()
+		self.stream.close()
+
+		waveFile = wave.open(self.audio_filename, 'wb')
+		waveFile.setnchannels(self.channels)
+		waveFile.setsampwidth(self.audio.get_sample_size(self.format))
+		waveFile.setframerate(self.rate)
+		waveFile.writeframes(b''.join(self.audio_frames))
+		waveFile.close()
+
+	def start(self):
+		audio_thread = threading.Thread(target=self.get_audio)
+		audio_thread.start()
+```
+recorder.py
+```python
+import threading
+import os
+import time
+import subprocess
+
+def record(video_camera, mic):
+
+	global video_thread
+	global audio_thread
+
+	print('Recording..')
+
+	video_thread = video_camera
+	audio_thread = mic
+
+	print('Starting threads..')
+
+	audio_thread.start()
+	video_thread.start()
+
+	while threading.active_count() > 2:
+		time.sleep(1)
+
+	print('Threads finished..')
+
+	frame_counts = video_thread.frame_counts
+	elapsed_time = 20
+	recorded_fps = frame_counts / elapsed_time
+
+	filename = 'final'
+
+	if abs(recorded_fps - 10) >= 0.01:
+		print('Re-encoding..')
+		cmd = "ffmpeg -r " + str(recorded_fps) + " -i output.avi -pix_fmt yuv420p -r 6 output2.avi"
+		subprocess.call(cmd, shell = True)
+
+		print('Muxing..')
+		cmd = "ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output2.avi -pix_fmt yuv420p  " + filename + ".avi"
+		subprocess.call(cmd, shell = True)
+	else:
+		print('Normal Muxing..')
+		cmd = 'ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output.avi -pix_fmt yuv420p " + filename + ".avi"
+		subprocess.call(cmd, shell = True)
+
+	print("..")
+
+def clean_up_files():
+	filename = 'final'
+	local_path = os.getcwd()
+
+	if os.path.exists(str(local_path) + "/audio.wav"):
+		os.remove(str(local_path) + "/audio.wav")
+
+	if os.path.exists(str(local_path) + "/output.avi"):
+		os.remove(str(local_path) + "/output.avi")
+
+	if os.path.exists(str(local_path) + "/output2.avi"):
+		os.remove(str(local_path) + "/output2.avi")
+
+	if os.path.exists(str(local_path) + "/" + filename + ".avi"):
+		os.remove(str(local_path) + "/" + filename + ".avi")
+```
+
 
 # Final Milestone
 <iframe width="560" height="315" src="https://www.youtube.com/embed/_5qJwmrPgkM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
@@ -163,11 +285,12 @@ def check_for_objects():
 			frame, found_obj = video_camera.get_object(object_classifier)
 			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
 				last_epoch = time.time()
-				print("Sending email...")
-				sendEmail(frame)
+				print("Sending email...") 
+				sendEmail(frame) #Call email function
 				print("done!")
-		except:
-			print ("Error sending email: "), sys.exc_info()[0]
+		except Exception as e:
+			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			
 
 #launch basic server 
 @app.route('/')
@@ -191,7 +314,7 @@ def video_feed():
 if __name__ == '__main__':
     t = threading.Thread(target=check_for_objects, args=())
     t.daemon = True
-    t.start()
+    t.start() 
     app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
 ```
 Camera:
@@ -205,7 +328,7 @@ import numpy as np
 class VideoCamera(object):
     #camera constructor
     def __init__(self, flip = False):
-        self.vs = cv2.VideoCapture(0)
+        self.vs = cv2.VideoCapture(0) #use cv2's video capture function
         self.flip = flip
         time.sleep(2.0)
 
