@@ -127,7 +127,7 @@ class Microphone():
   		'''
 		for i in range(self.audio.get_device_count()):
 			print(self.audio.get_device_info_by_index(i))
-		```
+		'''
 
 		self.stream = self.audio.open(format=self.format,
 						channels = self.channels,
