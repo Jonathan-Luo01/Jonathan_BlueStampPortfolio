@@ -145,7 +145,6 @@ class Microphone():
 			self.audio_frames.append(data)
 
 		self.stream.stop_stream()
-		self.stream.close()
 
 		waveFile = wave.open(self.audio_filename, 'wb')
 		waveFile.setnchannels(self.channels)
