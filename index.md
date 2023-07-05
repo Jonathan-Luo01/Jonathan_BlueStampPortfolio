@@ -13,28 +13,63 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had all the functions of a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
 
 Camera.py:
-I added this method to save a short video.
 ```python
-   def get_video(self):
- 	out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (int(self.vs.get(3)), int(self.vs.get(4)))) #Create a VideoWriter object
+#import libraries
+import cv2
+import imutils
+import time
+import numpy as np
+import threading
+
+class VideoCamera(object):
+    #camera constructor
+    def __init__(self, flip = False):
+        self.vs = cv2.VideoCapture(0) #use cv2's video capture function
+        self.flip = flip
+	self.frame_counts = 1
+	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480))
+        time.sleep(2.0)
+
+    #delete camera object
+    def __del__(self):
+        self.vs.stop()
+
+    #flips camera object
+    def flip_if_needed(self, frame):
+        if self.flip:
+            return np.flip(frame, 0)
+        return frame
+
+    #Return a single frame taken by the camera
+    def get_frame(self):
+        ret, frame = self.vs.read()
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
+
+    def get_video(self):
+ 	self.frame_counts = 1
   	t_end = time.time() + 20
    	while(time.time() < t_end): #loop for 20 seconds
-    	    ret, frame = self.vs.read() #read from camera
+    	      	ret, frame = self.vs.read() #read from camera
+		self.frame_counts += 1
+		
+  		if ret == True:
+			self.video_out.write(frame) #Add frame to the video
 
-  	    if ret == True:
-       		out.write(frame) #Add frame to the video
+    	      	else:
+	 		break
+   	self.video_out.release() #Release VideoWriter
+        cv2.destroyAllWindows() #Deallocate data
 
-    	    else:
-	 	break
-   	out.release() #Release VideoWriter
-    	cv2.destroyAllWindows() #Deallocate data
-```
-I also modified get_object to call get_video whenever an object was detected.
-```python
-   def get_object(self, classifier):
-        found_objects = False #initialize boolean
-        ret, frame = self.vs.read() #read from camera
-        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY) #set color
+    def start(self):
+	    video_thread = threading.Thread(target=self.get_video)
+	    video_thread.start()
+  
+    #Look for an object and return image
+    def get_object(self, classifier):
+        found_objects = False
+        ret, frame = self.vs.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
         objects = classifier.detectMultiScale(
             gray,
@@ -42,39 +77,64 @@ I also modified get_object to call get_video whenever an object was detected.
             minNeighbors=5,
             minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE
-        ) #use classifier to get array of detected objects
+        )
 
         if len(objects) > 0:
             found_objects = True
-	    self.get_video() #Call get_video() to create a video
 
         # Draw a rectangle around the objects
-        for (x, y, w, h) in objects:  
+        for (x, y, w, h) in objects:
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
         ret, jpeg = cv2.imencode('.jpg', frame) 
         return (jpeg.tobytes(), found_objects)
 ```
-Mail.py:
-I imported a few more libraries to use for the video. Here are all the libraries I used:
+mail.py
 ```python
+#import libraries
 import smtplib
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
+from email.mime.Multipart import MIMEMultipart
+from email.mime.Text import MIMEText
 from email.mime.base import MIMEBase
-from email.mime.image import MIMEImage
+from email.mime.Image import MIMEImage
 from email.mime.application import MIMEApplication
 from email import encoders
-```
-Here are the modifications I made to sendEmail:
-```python
-def sendEmail(image):
-	video_file = MIMEBase('application', 'octet-stream')
- 	video_file.set_payload(open('output.avi', "rb").read()) #read from file
 
-  	encoders.encode_base64(video_file) 
-   	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
-   
+# Email you want to send the update from (only works with gmail)
+fromEmail = 'email@gmail.com'
+# You have to generate an app password since Gmail does not allow less secure apps anymore
+# https://support.google.com/accounts/answer/185833?hl=en
+fromEmailPassword = 'password'
+
+# Email you want to send the update to
+toEmail = 'email2@gmail.com'
+
+def sendVideo():
+  	video_file = MIMEBase('application', 'octet-stream')
+  	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
+
+  	encoders.encode_base64(video_file)
+  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+	
+  	msgRoot = MIMEMultipart('related')
+	msgRoot['Subject'] = 'Security Update: Video'
+	msgRoot['From'] = fromEmail
+	msgRoot['To'] = toEmail
+	msgRoot.preamble = 'Raspberry pi security camera update'
+
+	msgAlternative = MIMEMultipart('alternative')
+	msgRoot.attach(msgAlternative)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
+ 	msgRoot.attach(video_file)
+
+	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp.starttls()
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.quit()
+
+def sendImage(image):
 	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update'
 	msgRoot['From'] = fromEmail
@@ -91,14 +151,83 @@ def sendEmail(image):
 
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
-	msgRoot.attach(msgImage) #add the image taken
-	msgRoot.attach(video_file) #attach video taken
+	msgRoot.attach(msgImage) #add the image taken 
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
 	smtp.login(fromEmail, fromEmailPassword) #access gmail
-	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string()) #send email
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
+```
+main.py:
+I imported a few more libraries to use for the video. Here are all the libraries I used:
+```python
+# import libraries
+import cv2 
+import sys
+from mail import sendImage, sendVideo
+from flask import Flask, render_template, Response
+from camera import VideoCamera
+from mic import Microphone
+from recorder import record
+from flask_basicauth import BasicAuth
+import time
+import threading
+
+email_update_interval = 60 # sends an email only once in this time interval
+video_camera = VideoCamera(flip=True) # creates a camera object, flip vertically
+mic = Microphone()
+object_classifier = cv2.CascadeClassifier("models/upperbody_recognition_model.xml") # an opencv classifier
+
+# App Globals for viewing live video feed
+app = Flask(__name__)
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
+app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
+app.config['BASIC_AUTH_FORCE'] = True
+
+basic_auth = BasicAuth(app)
+last_epoch = 0
+
+def check_for_objects():
+	global last_epoch
+	while True:
+		try:
+			frame, found_obj = video_camera.get_object(object_classifier)
+			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
+				last_epoch = time.time()
+				print("Sending email...")
+        			sendImage(frame) #Send image
+        			record(video_camera, mic)
+				sendVideo() #Send video
+				print("done!")
+		except Exception as e:
+			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			
+
+#launch basic server 
+@app.route('/')
+@basic_auth.required 
+def index():
+    return render_template('index.html')
+
+#return frame
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+#Generate video feed
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(video_camera),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+if __name__ == '__main__':
+    t = threading.Thread(target=check_for_objects, args=())
+    t.daemon = True
+    t.start() 
+    app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
 ```
 Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and pip installed pyaudio.
 
@@ -252,6 +381,7 @@ Casing:
 ![Schematics](case_schematic.png) 
 
 # Code
+This is the code prior to the modifications.
 Main:
 ```python
 # import libraries
