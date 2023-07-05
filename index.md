@@ -27,7 +27,7 @@ class VideoCamera(object):
         self.vs = cv2.VideoCapture(0) #use cv2's video capture function
         self.flip = flip
 	self.frame_counts = 1
-	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480))
+	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480)) #create a VideoWriter object
         time.sleep(2.0)
 
     #delete camera object
@@ -46,12 +46,13 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
+    #Get a short video from the camera
     def get_video(self):
  	self.frame_counts = 1
   	t_end = time.time() + 20
    	while(time.time() < t_end): #loop for 20 seconds
     	      	ret, frame = self.vs.read() #read from camera
-		self.frame_counts += 1
+		self.frame_counts += 1 
 		
   		if ret == True:
 			self.video_out.write(frame) #Add frame to the video
@@ -61,6 +62,7 @@ class VideoCamera(object):
    	self.video_out.release() #Release VideoWriter
         cv2.destroyAllWindows() #Deallocate data
 
+    #Start the thread
     def start(self):
 	    video_thread = threading.Thread(target=self.get_video)
 	    video_thread.start()
@@ -77,7 +79,7 @@ class VideoCamera(object):
             minNeighbors=5,
             minSize=(30, 30),
             flags=cv2.CASCADE_SCALE_IMAGE
-        )
+        ) # call classifier method
 
         if len(objects) > 0:
             found_objects = True
@@ -109,15 +111,16 @@ fromEmailPassword = 'password'
 # Email you want to send the update to
 toEmail = 'email2@gmail.com'
 
+# Send a video via email
 def sendVideo():
-  	video_file = MIMEBase('application', 'octet-stream')
+  	video_file = MIMEBase('application', 'octet-stream') #create binary file
   	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
 
-  	encoders.encode_base64(video_file)
+  	encoders.encode_base64(video_file) 
   	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
 	
   	msgRoot = MIMEMultipart('related')
-	msgRoot['Subject'] = 'Security Update: Video'
+	msgRoot['Subject'] = 'Security Update: Video' 
 	msgRoot['From'] = fromEmail
 	msgRoot['To'] = toEmail
 	msgRoot.preamble = 'Raspberry pi security camera update'
@@ -134,6 +137,7 @@ def sendVideo():
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 
+# Send an image via email
 def sendImage(image):
 	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update'
@@ -176,7 +180,7 @@ import threading
 
 email_update_interval = 60 # sends an email only once in this time interval
 video_camera = VideoCamera(flip=True) # creates a camera object, flip vertically
-mic = Microphone()
+mic = Microphone() # creates a microphone object
 object_classifier = cv2.CascadeClassifier("models/upperbody_recognition_model.xml") # an opencv classifier
 
 # App Globals for viewing live video feed
@@ -197,7 +201,7 @@ def check_for_objects():
 				last_epoch = time.time()
 				print("Sending email...")
         			sendImage(frame) #Send image
-        			record(video_camera, mic)
+        			record(video_camera, mic) #Record video
 				sendVideo() #Send video
 				print("done!")
 		except Exception as e:
@@ -229,10 +233,11 @@ if __name__ == '__main__':
     t.start() 
     app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
 ```
-Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and pip installed pyaudio.
+Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and installed pyaudio and wave.
 
-mic.py 
+mic.py: 
 ```python
+#import libraries
 import pyaudio 
 import wave
 import threading
@@ -250,7 +255,7 @@ class Microphone():
 		self.format = pyaudio.paInt16
 		self.audio_filename = 'audio.wav'
 		self.audio = pyaudio.PyAudio()
-		#These parameters are different for each audio device.
+		#These parameters vary for each audio device.
 
 		#The following code reveals the parameters of your own device.
   		'''
@@ -269,9 +274,9 @@ class Microphone():
 	def get_audio(self):
 		self.stream.start_stream()
 		t_end = time.time() + 20
-		while(time.time() < t_end):
-			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False)
-			self.audio_frames.append(data)
+		while(time.time() < t_end): #record for 20 seconds
+			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False) #get audio
+			self.audio_frames.append(data) 
 
 		self.stream.stop_stream()
 
@@ -279,15 +284,16 @@ class Microphone():
 		waveFile.setnchannels(self.channels)
 		waveFile.setsampwidth(self.audio.get_sample_size(self.format))
 		waveFile.setframerate(self.rate)
-		waveFile.writeframes(b''.join(self.audio_frames))
+		waveFile.writeframes(b''.join(self.audio_frames)) #write to file
 		waveFile.close()
 
 	def start(self):
 		audio_thread = threading.Thread(target=self.get_audio)
 		audio_thread.start()
 ```
-recorder.py
+recorder.py:
 ```python
+#import libraries
 import threading
 import os
 import time
@@ -308,7 +314,7 @@ def record(video_camera, mic):
 	audio_thread.start()
 	video_thread.start()
 
-	while threading.active_count() > 2:
+	while threading.active_count() > 2: # Make sure threads are finished
 		time.sleep(1)
 
 	print('Threads finished..')
@@ -319,8 +325,8 @@ def record(video_camera, mic):
 
 	filename = 'final'
 
-	if abs(recorded_fps - 10) >= 0.01:
-		print('Re-encoding..')
+	if abs(recorded_fps - 10) >= 0.01: # Check to see if recorded fps matches intended fps
+		print('Re-encoding..') 
 		cmd = "ffmpeg -r " + str(recorded_fps) + " -i output.avi -pix_fmt yuv420p -r 6 output2.avi"
 		subprocess.call(cmd, shell = True)
 
@@ -334,6 +340,7 @@ def record(video_camera, mic):
 
 	print("..")
 
+# Cleans up old video and audio files
 def clean_up_files():
 	filename = 'final'
 	local_path = os.getcwd()
