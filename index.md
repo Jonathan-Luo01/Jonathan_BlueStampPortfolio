@@ -160,7 +160,7 @@ def sendImage(image):
 	smtp.quit()
 ```
 main.py:
-I imported a few more libraries to use for the video. Here are all the libraries I used:
+
 ```python
 # import libraries
 import cv2 
