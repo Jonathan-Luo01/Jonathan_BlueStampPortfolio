@@ -16,13 +16,32 @@ fromEmailPassword = 'password'
 # Email you want to send the update to
 toEmail = 'email2@gmail.com'
 
-def sendEmail(image):
-  video_file = MIMEBase('application', 'octet-stream')
-  video_file.set_payload(open('output.avi', 'rb').read()) #read from file
+def sendEmail():
+  	video_file = MIMEBase('application', 'octet-stream')
+  	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
 
-  encoders.encode_base64(video_file)
-  video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
-  
+  	encoders.encode_base64(video_file)
+  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+	
+  	msgRoot = MIMEMultipart('related')
+	msgRoot['Subject'] = 'Security Update: Video'
+	msgRoot['From'] = fromEmail
+	msgRoot['To'] = toEmail
+	msgRoot.preamble = 'Raspberry pi security camera update'
+
+	msgAlternative = MIMEMultipart('alternative')
+	msgRoot.attach(msgAlternative)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
+ 	msgRoot.attach(video_file)
+
+	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp.starttls()
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.quit()
+
+def sendEmail(image):
 	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update'
 	msgRoot['From'] = fromEmail
@@ -40,7 +59,6 @@ def sendEmail(image):
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
 	msgRoot.attach(msgImage) #add the image taken 
-  msgRoot.attach(video_file)
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
