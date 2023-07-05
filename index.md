@@ -101,6 +101,7 @@ from email.mime.base import MIMEBase
 from email.mime.Image import MIMEImage
 from email.mime.application import MIMEApplication
 from email import encoders
+from recorder import clean_up_files
 
 # Email you want to send the update from (only works with gmail)
 fromEmail = 'email@gmail.com'
@@ -136,6 +137,7 @@ def sendVideo():
 	smtp.login(fromEmail, fromEmailPassword) #access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
+	clean_up_files()
 
 # Send an image via email
 def sendImage(image):
