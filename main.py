@@ -32,9 +32,9 @@ def check_for_objects():
 			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
 				last_epoch = time.time()
 				print("Sending email...")
-        sendEmail() #Send image
-        record(video_camera, mic)
-				sendEmail(frame) #Send video
+        			sendImage(frame) #Send image
+        			record(video_camera, mic)
+				sendVideo() #Send video
 				print("done!")
 		except Exception as e:
 			print("Error sending email: ", __type(e).__name__, e) #Return exception
