@@ -40,6 +40,7 @@ def sendVideo():
 	smtp.login(fromEmail, fromEmailPassword) #access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
+	clean_up_files()
 
 def sendImage(image):
 	msgRoot = MIMEMultipart('related')
