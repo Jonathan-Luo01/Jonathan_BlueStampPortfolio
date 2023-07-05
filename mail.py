@@ -16,7 +16,7 @@ fromEmailPassword = 'password'
 # Email you want to send the update to
 toEmail = 'email2@gmail.com'
 
-def sendEmail():
+def sendVideo():
   	video_file = MIMEBase('application', 'octet-stream')
   	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
 
@@ -41,7 +41,7 @@ def sendEmail():
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 
-def sendEmail(image):
+def sendImage(image):
 	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update'
 	msgRoot['From'] = fromEmail
