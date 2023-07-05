@@ -1,7 +1,7 @@
 # import libraries
 import cv2 
 import sys
-from mail import sendEmail
+from mail import sendImage, sendVideo
 from flask import Flask, render_template, Response
 from camera import VideoCamera
 from mic import Microphone
