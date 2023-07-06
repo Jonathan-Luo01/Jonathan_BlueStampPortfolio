@@ -46,6 +46,14 @@ def check_for_objects():
 def index():
     return render_template('index.html')
 
+@app.route('/code')
+def code():
+	return render_template('code.html')
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
+
 #return frame
 def gen(camera):
     while True:
