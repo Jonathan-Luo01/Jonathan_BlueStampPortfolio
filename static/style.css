@@ -9,6 +9,7 @@ h1 {
   font-weight:300;
   letter-spacing: 2px;
   font-size:48px;
+  vertical-align: top;
 }
 p {
   font-family: 'Lato', sans-serif;
@@ -22,13 +23,6 @@ p {
   text-align:center;
   background: linear-gradient(60deg, rgba(84,58,183,1) 0%, rgba(0,172,193,1) 100%);
   color:white;
-}
-.logo {
-  width:50px;
-  fill:white;
-  padding-right:15px;
-  display:inline-block;
-  vertical-align: middle;
 }
 
 .inner-header {
