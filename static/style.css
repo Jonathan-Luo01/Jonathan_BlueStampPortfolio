@@ -1,5 +1,30 @@
 @import url(//fonts.googleapis.com/css?family=Lato:300:400);
 
+.nav {
+  font-family: 'Lato', sans-serif;
+  background-color: #f5f5f5;
+  overflow: hidden;
+}
+
+.nav a {
+  float: left;
+  color: #666666;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 17px;
+}
+
+.nav a:hover {
+  background-color: #C0C0C0;
+  color: #20bf55;
+  font-weight: 550;
+}
+
+.nav a.active {
+  background-image: linear-gradient(to top, #c471f5 0%, #fa71cd 100%);
+  color: white;
+}
+
 body {
   margin:0;
 }
