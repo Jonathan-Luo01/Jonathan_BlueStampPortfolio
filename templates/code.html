@@ -18,11 +18,7 @@
     <div class="inner-header flex">
       <h1>Code</h1>
     </div>
-  <div class="code">
-    <pre><code class="language-python">
-      
-    </code></pre>
-  </div>
+  
   <!--Waves Container-->
     <div>
       <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -46,6 +42,375 @@
 <!--Content starts-->
   <div class="content flex">
     <p> Jonathan L | Computer Vision Security Camera </p>
+  </div>
+  <div class = "container">
+    <div class="code" style = "width: 50%">
+      <pre><code class="language-python">
+# main.py
+# import libraries
+import cv2 
+import sys
+from mail import sendImage, sendVideo
+from flask import Flask, render_template, Response
+from camera import VideoCamera
+from mic import Microphone
+from recorder import record
+from flask_basicauth import BasicAuth
+import time
+import threading
+
+email_update_interval = 60 # sends an email only once in this time interval
+video_camera = VideoCamera(flip=True) # creates a camera object, flip vertically
+mic = Microphone()
+object_classifier = cv2.CascadeClassifier("models/upperbody_recognition_model.xml") # an opencv classifier
+
+# App Globals for viewing live video feed
+app = Flask(__name__)
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
+app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
+app.config['BASIC_AUTH_FORCE'] = True
+
+basic_auth = BasicAuth(app)
+last_epoch = 0
+
+def check_for_objects():
+	global last_epoch
+	while True:
+		try:
+			frame, found_obj = video_camera.get_object(object_classifier)
+			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
+				last_epoch = time.time()
+				print("Sending email...")
+        			sendImage(frame) #Send image
+        			record(video_camera, mic)
+				sendVideo() #Send video
+				print("done!")
+		except Exception as e:
+			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			
+
+#launch basic server 
+@app.route('/')
+@basic_auth.required 
+def index():
+    return render_template('index.html')
+
+@app.route('/code')
+def code():
+	return render_template('code.html')
+
+@app.route('/about')
+def about():
+	return render_template('about.html')
+
+#return frame
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+#Generate video feed
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(video_camera),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+if __name__ == '__main__':
+    t = threading.Thread(target=check_for_objects, args=())
+    t.daemon = True
+    t.start() 
+    app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
+      </code></pre>
+    </div>
+    <div class="code">
+      <pre><code class="language-python">
+# mail.py
+#import libraries
+import smtplib
+from email.mime.Multipart import MIMEMultipart
+from email.mime.Text import MIMEText
+from email.mime.base import MIMEBase
+from email.mime.Image import MIMEImage
+from email.mime.application import MIMEApplication
+from email import encoders
+from recorder import clean_up_files
+
+# Email you want to send the update from (only works with gmail)
+fromEmail = 'email@gmail.com'
+# You have to generate an app password since Gmail does not allow less secure apps anymore
+# https://support.google.com/accounts/answer/185833?hl=en
+fromEmailPassword = 'password'
+
+# Email you want to send the update to
+toEmail = 'email2@gmail.com'
+
+def sendVideo():
+  	video_file = MIMEBase('application', 'octet-stream')
+  	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
+
+  	encoders.encode_base64(video_file)
+  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+	
+  	msgRoot = MIMEMultipart('related')
+	msgRoot['Subject'] = 'Security Update: Video'
+	msgRoot['From'] = fromEmail
+	msgRoot['To'] = toEmail
+	msgRoot.preamble = 'Raspberry pi security camera update'
+
+	msgAlternative = MIMEMultipart('alternative')
+	msgRoot.attach(msgAlternative)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
+ 	msgRoot.attach(video_file)
+
+	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp.starttls()
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.quit()
+	clean_up_files()
+
+def sendImage(image):
+	msgRoot = MIMEMultipart('related')
+	msgRoot['Subject'] = 'Security Update'
+	msgRoot['From'] = fromEmail
+	msgRoot['To'] = toEmail
+	msgRoot.preamble = 'Raspberry pi security camera update'
+
+	msgAlternative = MIMEMultipart('alternative')
+	msgRoot.attach(msgAlternative)
+	msgText = MIMEText('Smart security cam found object') #add description
+	msgAlternative.attach(msgText) 
+
+	msgText = MIMEText('<img src="cid:image1">', 'html')
+	msgAlternative.attach(msgText)
+
+	msgImage = MIMEImage(image)
+	msgImage.add_header('Content-ID', '<image1>')
+	msgRoot.attach(msgImage) #add the image taken 
+
+	smtp = smtplib.SMTP('smtp.gmail.com', 587)
+	smtp.starttls()
+	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
+	smtp.quit()
+
+      </code></pre>
+    </div>
+  </div>
+
+  <div class = "container">
+    <div class="code" style = "width: 60%">
+      <pre><code class="language-python">
+# camera.py
+#import libraries
+import cv2
+import imutils
+import time
+import numpy as np
+import threading
+
+class VideoCamera(object):
+    #camera constructor
+    def __init__(self, flip = False):
+        self.vs = cv2.VideoCapture(0) #use cv2's video capture function
+        self.flip = flip
+	self.frame_counts = 1
+	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480))
+        time.sleep(2.0)
+
+    #delete camera object
+    def __del__(self):
+        self.vs.stop()
+
+    #flips camera object
+    def flip_if_needed(self, frame):
+        if self.flip:
+            return np.flip(frame, 0)
+        return frame
+
+    #Return a single frame taken by the camera
+    def get_frame(self):
+        ret, frame = self.vs.read()
+        ret, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
+
+    def get_video(self):
+ 	self.frame_counts = 1
+  	t_end = time.time() + 20
+   	while(time.time() < t_end): #loop for 20 seconds
+    	      	ret, frame = self.vs.read() #read from camera
+		self.frame_counts += 1
+		
+  		if ret == True:
+			self.video_out.write(frame) #Add frame to the video
+
+    	      	else:
+	 		break
+   	self.video_out.release() #Release VideoWriter
+        cv2.destroyAllWindows() #Deallocate data
+
+    def start(self):
+	    video_thread = threading.Thread(target=self.get_video)
+	    video_thread.start()
+  
+    #Look for an object and return image
+    def get_object(self, classifier):
+        found_objects = False
+        ret, frame = self.vs.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+        objects = classifier.detectMultiScale(
+            gray,
+            scaleFactor=1.1,
+            minNeighbors=5,
+            minSize=(30, 30),
+            flags=cv2.CASCADE_SCALE_IMAGE
+        )
+
+        if len(objects) > 0:
+            found_objects = True
+
+        # Draw a rectangle around the objects
+        for (x, y, w, h) in objects:
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+        ret, jpeg = cv2.imencode('.jpg', frame) 
+        return (jpeg.tobytes(), found_objects)
+      </code></pre>
+    </div>
+    <div class="code">
+      <pre><code class="language-python">
+# mic.py
+# import libraries
+import pyaudio 
+import wave
+import threading
+import time
+
+class Microphone():
+
+	def __init__(self):
+
+		self.open = True
+		self.frames_per_buffer = 1024
+		self.channels = 1
+		self.input_device_index
+		self.rate = 48000
+		self.format = pyaudio.paInt16
+		self.audio_filename = 'audio.wav'
+		self.audio = pyaudio.PyAudio()
+		#These parameters are different for each audio device.
+
+		#The following code reveals the parameters of your own device.
+  		'''
+		for i in range(self.audio.get_device_count()):
+			print(self.audio.get_device_info_by_index(i))
+		'''
+
+		self.stream = self.audio.open(format=self.format,
+						channels = self.channels,
+						rate = self.rate,
+						input = True,
+						input_device_index = self.input_device_index,
+						frames_per_buffer = self.frames_per_buffer)
+		self.audio_frames = []
+
+	def get_audio(self):
+		self.stream.start_stream()
+		t_end = time.time() + 20
+		while(time.time() < t_end): #loop for 20 seconds
+			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False)
+			self.audio_frames.append(data)
+
+		self.stream.stop_stream()
+
+    #create audio file
+		waveFile = wave.open(self.audio_filename, 'wb')
+		waveFile.setnchannels(self.channels)
+		waveFile.setsampwidth(self.audio.get_sample_size(self.format))
+		waveFile.setframerate(self.rate)
+		waveFile.writeframes(b''.join(self.audio_frames))
+		waveFile.close()
+
+	def start(self):
+		audio_thread = threading.Thread(target=self.get_audio)
+		audio_thread.start()
+
+      </code></pre>
+    </div>
+  </div>
+
+  <div class = "container">
+  <div class="code" style = "margin:auto">
+    <pre><code class="language-python">
+#recorder.py
+#import libraries
+import threading
+import os
+import time
+import subprocess
+
+def record(video_camera, mic):
+
+	global video_thread
+	global audio_thread
+
+	print('Recording..')
+  
+	video_thread = video_camera
+	audio_thread = mic
+
+	print('Starting threads..')
+
+	audio_thread.start()
+	video_thread.start()
+
+	while threading.active_count() > 2:
+		time.sleep(1)
+
+	print('Threads finished..')
+
+	frame_counts = video_thread.frame_counts
+	elapsed_time = 20
+	recorded_fps = frame_counts / elapsed_time
+
+	filename = 'final'
+
+	if abs(recorded_fps - 10) >= 0.01:
+		print('Re-encoding..')
+		cmd = "ffmpeg -r " + str(recorded_fps) + " -i output.avi -pix_fmt yuv420p -r 6 output2.avi"
+		subprocess.call(cmd, shell = True)
+
+		print('Muxing..')
+		cmd = "ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output2.avi -pix_fmt yuv420p  " + filename + ".avi"
+		subprocess.call(cmd, shell = True)
+	else:
+		print('Normal Muxing..')
+		cmd = "ffmpeg -ac 2 -channel_layout stereo -i audio.wav -i output.avi -pix_fmt yuv420p " + filename + ".avi"
+		subprocess.call(cmd, shell = True)
+
+	print("..")
+
+def clean_up_files():
+	filename = 'final'
+	local_path = os.getcwd()
+
+	if os.path.exists(str(local_path) + "/audio.wav"):
+		os.remove(str(local_path) + "/audio.wav")
+
+	if os.path.exists(str(local_path) + "/output.avi"):
+		os.remove(str(local_path) + "/output.avi")
+
+	if os.path.exists(str(local_path) + "/output2.avi"):
+		os.remove(str(local_path) + "/output2.avi")
+
+	if os.path.exists(str(local_path) + "/" + filename + ".avi"):
+		os.remove(str(local_path) + "/" + filename + ".avi")
+
+      </code></pre>
+    </div>
   </div>
 <!--Content ends-->
 </html>
