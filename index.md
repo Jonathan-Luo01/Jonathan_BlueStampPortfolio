@@ -5,7 +5,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 |:--:|:--:|:--:|:--:|
 | Jonathan L | Monta Vista High School | Computer Science | Incoming Junior
 
-<!--- ![Headstone Image](headshot.png) -->
+![Headstone Image](headshot.png) 
 <!--- ![Project Image](project.jpg) -->
 
 
