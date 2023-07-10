@@ -16,8 +16,8 @@
 
 .nav a:hover {
   background-color: #C0C0C0;
-  color: #20bf55;
-  font-weight: 550;
+  color: #c471f5;
+  font-weight: 600;
 }
 
 .nav a.active {
