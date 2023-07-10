@@ -316,7 +316,7 @@ def record(video_camera, mic):
 	audio_thread.start()
 	video_thread.start()
 
-	while threading.active_count() > 2: # Make sure threads are finished
+	while threading.active_count() > 2: # Make sure threads are finished (main thread and camera thread will still run)
 		time.sleep(1)
 
 	print('Threads finished..')
