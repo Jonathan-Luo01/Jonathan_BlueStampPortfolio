@@ -10,7 +10,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect movin
 
 
 # Modifications 
-I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had all the functions of a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
+I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had more functions like a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
 
 camera.py:
 ```python
