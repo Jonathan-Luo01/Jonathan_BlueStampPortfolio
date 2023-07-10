@@ -37,6 +37,41 @@
   <div class="content flex">
     <p> Jonathan L | Computer Vision Security Camera </p>
   </div>
+  <p class = "about" >
+  Hi! I'm Jonathan, an incoming junior at Monta Vista High School. My project is the Computer Vision Security Camera. 
+  This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. I used 
+  Python and openCV to detect objects in the video feed. When movement is detected, the camera sends two emails to the user, 
+  with the first one containing an image and the second containing a short twenty-second video. The main libraries I used 
+  to sync the audio and video were pyaudio, wave, threading, and fmmpeg. The user can also choose to view the live
+  security feed of the camera if the Raspberry Pi and their personal device are connected to the same network. 
+  </p>
+  <br>
+  <p class = "about" >
+  My first milestone was actually setting up the Raspberry Pi and installing the necessary programs to run
+  the code. I installed Raspberry Pi Imager and OBS Studio to set up the SD card for the Raspberry Pi and connect the Pi
+  to my laptop. In this first section of the project, I faced the most challenges while I was actually setting up the Pi.
+  It took around ten hours to install openCV and the other libraries. The Raspberry Pi Zero was not able to handle 
+  the latest versions of the software, so I had to search for an older, compatible version. The Raspberry Pi's 
+  plastic connector also broke, so I wasn't able to use the designated Raspberry Pi Camera and switched to a USB
+  camera. I replaced PiVideoStream in the code with cv2's default functions. I also had to redesign the casing,
+  since the USB camera would not fit in the smaller previous camera case. 
+  </p>
+  <br>
+  <p class = "about" >
+  In my second milestone, I created a 3D model of a camera case. Using Onshape, I created a 3D model of the
+  exterior casing and added the holes needed for each cable. The main difficulty I faced was learning how to use CAD
+  to create a 3D model and make sure that the dimensions were accurate to ensure that it would be printed out correctly in
+  the first attempt. However, I still had to sand down the holes with a file and use a drill to largen the hole for the camera,
+  since I forgot to account for the cables' thickness. 
+  </p>
+  <br>
+  <p class = "about" >
+  My final milestone was completely assembling the Computer Vision Security Camera by adding the 
+  Raspberry Pi and USB camera into the casing. I used super glue to attach the camera, and I secured the Raspberry Pi 
+  on the bottom of the case with tape. I also added some software modifications to get the camera to send both a video
+  and an image, and since openCV didn't support sound, I mixed the audio and video with ffmpeg and pyaudio. 
+  </p>
+  <br>
 <!--Content ends-->
 </html>
 
