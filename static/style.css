@@ -76,6 +76,16 @@ p {
   color: #333333;
 }
 
+p.about {
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 1px;
+  text-align: left;
+  text-indent: 40px;
+  font-size:18px;
+  color: #333333;
+  margin: 0px 80px 0px 80px;
+}
+
 .header {
   position:relative;
   text-align:center;
