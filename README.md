@@ -52,6 +52,14 @@ source ~/.profile
 workon cv
 ```
 
+Remember to also install the dependencies for this project with:
+
+```
+pip install -r requirements.txt
+```
+
+or directly installing each of the libraries in the file.
+
 ## Customization
 
 To get emails when objects are detected, you'll need to make a couple modifications to the `mail.py` file.
