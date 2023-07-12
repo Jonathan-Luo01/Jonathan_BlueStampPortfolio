@@ -1,4 +1,4 @@
-#import libraries
+# import libraries
 import smtplib
 from email.mime.Multipart import MIMEMultipart
 from email.mime.Text import MIMEText
@@ -19,10 +19,10 @@ toEmail = 'email2@gmail.com'
 
 def sendVideo():
   	video_file = MIMEBase('application', 'octet-stream')
-  	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
+  	video_file.set_payload(open('output.avi', 'rb').read()) # read from file
 
   	encoders.encode_base64(video_file)
-  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) # add a header
 	
   	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update: Video'
@@ -32,13 +32,13 @@ def sendVideo():
 
 	msgAlternative = MIMEMultipart('alternative')
 	msgRoot.attach(msgAlternative)
-	msgText = MIMEText('Smart security cam found object') #add description
+	msgText = MIMEText('Smart security cam found object') # add description
 	msgAlternative.attach(msgText) 
  	msgRoot.attach(video_file)
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
-	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.login(fromEmail, fromEmailPassword) # access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 	clean_up_files()
@@ -52,7 +52,7 @@ def sendImage(image):
 
 	msgAlternative = MIMEMultipart('alternative')
 	msgRoot.attach(msgAlternative)
-	msgText = MIMEText('Smart security cam found object') #add description
+	msgText = MIMEText('Smart security cam found object') # add description
 	msgAlternative.attach(msgText) 
 
 	msgText = MIMEText('<img src="cid:image1">', 'html')
@@ -60,10 +60,10 @@ def sendImage(image):
 
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
-	msgRoot.attach(msgImage) #add the image taken 
+	msgRoot.attach(msgImage) # add the image taken 
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
-	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.login(fromEmail, fromEmailPassword) # access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
