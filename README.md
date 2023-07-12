@@ -35,7 +35,7 @@ fswebcam imagename.jpg
 
 ## Installing Dependencies
 
-I used the following [tutorial](https://www.hackster.io/hackershack/smart-security-camera-90d7bd#toc-code-6/) from Hackershack and [another tutorial](http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/) for this project. However, instead of using the Python 2.7 version that they used, I used Python 3.9.2. Though I followed most of the instructions in the tutorial, the Raspberry Pi Zero was unable to work with the latest versions of the software, so I directly ran:
+I used the following [tutorial](https://www.hackster.io/hackershack/smart-security-camera-90d7bd#toc-code-6/) from Hackershack and [this download tutorial](http://www.pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/) for this project. However, instead of using the Python 2.7 version that they used, I used Python 3.9.2. Though I followed most of the instructions in the tutorial, the Raspberry Pi Zero was unable to work with the latest versions of the software, so I directly ran:
 
 ```
 pip install opencv-python==4.5.3.56
