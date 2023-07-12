@@ -1,5 +1,5 @@
 # Computer Vision Security Camera
-This project uses a Raspberry Pi Zero Wireless and an USB Camera to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, two emails will be sent. The initial email contains a photo of the object, while the next email contains a twenty-second short video. I used the libraries pyaudio, wave, threading, and fmmpeg to sync the audio and video. The user can also choose to view the live video feed of the security camera if the Raspberry Pi and their personal device are connected to the same network. 
+This project uses a Raspberry Pi Zero Wireless and an USB camera to detect moving objects and alert the user. Python and openCV is used to detect objects in the video feed and when movement is detected, two emails will be sent. The initial email contains a photo of the object, while the next email contains a twenty-second short video. I used the libraries pyaudio, wave, threading, and fmmpeg to sync the audio and video. The user can also choose to view the live video feed of the security camera if the Raspberry Pi and their personal device are connected to the same network. 
 
 | **Engineer** | **School** | **Area of Interest** | **Grade** |
 |:--:|:--:|:--:|:--:|
@@ -14,7 +14,7 @@ I created a simple security camera that detects motion and sends a notification 
 
 camera.py:
 ```python
-#import libraries
+# import libraries
 import cv2
 import imutils
 import time
@@ -22,52 +22,52 @@ import numpy as np
 import threading
 
 class VideoCamera(object):
-    #camera constructor
+    # camera constructor
     def __init__(self, flip = False):
-        self.vs = cv2.VideoCapture(0) #use cv2's video capture function
+        self.vs = cv2.VideoCapture(0) # use cv2's video capture function
         self.flip = flip
 	self.frame_counts = 1
-	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480)) #create a VideoWriter object
+	self.video_out = cv2.VideoWriter('output.avi', cv2.VideoWriter_fourcc(*'MJPG'), 10, (640, 480)) # create a VideoWriter object
         time.sleep(2.0)
 
-    #delete camera object
+    # delete camera object
     def __del__(self):
         self.vs.stop()
 
-    #flips camera object
+    # flips camera object
     def flip_if_needed(self, frame):
         if self.flip:
             return np.flip(frame, 0)
         return frame
 
-    #Return a single frame taken by the camera
+    # Return a single frame taken by the camera
     def get_frame(self):
         ret, frame = self.vs.read()
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
-    #Get a short video from the camera
+    # Get a short video from the camera
     def get_video(self):
  	self.frame_counts = 1
   	t_end = time.time() + 20
-   	while(time.time() < t_end): #loop for 20 seconds
-    	      	ret, frame = self.vs.read() #read from camera
+   	while(time.time() < t_end): # loop for 20 seconds
+    	      	ret, frame = self.vs.read() # read from camera
 		self.frame_counts += 1 
 		
   		if ret == True:
-			self.video_out.write(frame) #Add frame to the video
+			self.video_out.write(frame) # Add frame to the video
 
     	      	else:
 	 		break
-   	self.video_out.release() #Release VideoWriter
-        cv2.destroyAllWindows() #Deallocate data
+   	self.video_out.release() # Release VideoWriter
+        cv2.destroyAllWindows() # Deallocate data
 
-    #Start the thread
+    # Start the thread
     def start(self):
 	    video_thread = threading.Thread(target=self.get_video)
 	    video_thread.start()
   
-    #Look for an object and return image
+    # Look for an object and return image
     def get_object(self, classifier):
         found_objects = False
         ret, frame = self.vs.read()
@@ -114,11 +114,11 @@ toEmail = 'email2@gmail.com'
 
 # Send a video via email
 def sendVideo():
-  	video_file = MIMEBase('application', 'octet-stream') #create binary file
-  	video_file.set_payload(open('output.avi', 'rb').read()) #read from file
+  	video_file = MIMEBase('application', 'octet-stream') # create binary file
+  	video_file.set_payload(open('output.avi', 'rb').read()) # read from file
 
   	encoders.encode_base64(video_file) 
-  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) #add a header
+  	video_file.add_header('Content-Disposition', 'attachment: filename = {}'.format("output.avi")) # add a header
 	
   	msgRoot = MIMEMultipart('related')
 	msgRoot['Subject'] = 'Security Update: Video' 
@@ -128,13 +128,13 @@ def sendVideo():
 
 	msgAlternative = MIMEMultipart('alternative')
 	msgRoot.attach(msgAlternative)
-	msgText = MIMEText('Smart security cam found object') #add description
+	msgText = MIMEText('Smart security cam found object') # add description
 	msgAlternative.attach(msgText) 
  	msgRoot.attach(video_file)
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
-	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.login(fromEmail, fromEmailPassword) # access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 	clean_up_files() # removes old video and audio files
@@ -149,7 +149,7 @@ def sendImage(image):
 
 	msgAlternative = MIMEMultipart('alternative')
 	msgRoot.attach(msgAlternative)
-	msgText = MIMEText('Smart security cam found object') #add description
+	msgText = MIMEText('Smart security cam found object') # add description
 	msgAlternative.attach(msgText) 
 
 	msgText = MIMEText('<img src="cid:image1">', 'html')
@@ -157,11 +157,11 @@ def sendImage(image):
 
 	msgImage = MIMEImage(image)
 	msgImage.add_header('Content-ID', '<image1>')
-	msgRoot.attach(msgImage) #add the image taken 
+	msgRoot.attach(msgImage) # add the image taken 
 
 	smtp = smtplib.SMTP('smtp.gmail.com', 587)
 	smtp.starttls()
-	smtp.login(fromEmail, fromEmailPassword) #access gmail
+	smtp.login(fromEmail, fromEmailPassword) # access gmail
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 ```
@@ -187,7 +187,7 @@ object_classifier = cv2.CascadeClassifier("models/upperbody_recognition_model.xm
 
 # App Globals for viewing live video feed
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' # Change username and password
 app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
 app.config['BASIC_AUTH_FORCE'] = True
 
@@ -199,31 +199,31 @@ def check_for_objects():
 	while True:
 		try:
 			frame, found_obj = video_camera.get_object(object_classifier)
-			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
+			if found_obj and (time.time() - last_epoch) > email_update_interval: # check if enough time is elapsed and if object is found
 				last_epoch = time.time()
 				print("Sending email...")
-        			sendImage(frame) #Send image
-        			record(video_camera, mic) #Record video
-				sendVideo() #Send video
+        			sendImage(frame) # Send image
+        			record(video_camera, mic) # Record video
+				sendVideo() # Send video
 				print("done!")
 		except Exception as e:
-			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			print("Error sending email: ", __type(e).__name__, e) # Return exception
 			
 
-#launch basic server 
+# launch basic server 
 @app.route('/')
 @basic_auth.required 
 def index():
     return render_template('index.html')
 
-#return frame
+# return frame
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-#Generate video feed
+# Generate video feed
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(video_camera),
@@ -233,7 +233,7 @@ if __name__ == '__main__':
     t = threading.Thread(target=check_for_objects, args=())
     t.daemon = True
     t.start() 
-    app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
+    app.run(host='0.0.0.0', debug=False) # make it accessible to every device on the network
 ```
 Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and installed pyaudio and wave.
 
@@ -257,9 +257,9 @@ class Microphone():
 		self.format = pyaudio.paInt16
 		self.audio_filename = 'audio.wav'
 		self.audio = pyaudio.PyAudio()
-		#These parameters vary for each audio device.
+		# These parameters vary for each audio device.
 
-		#The following code reveals the parameters of your own device.
+		# The following code reveals the parameters of your own device.
   		'''
 		for i in range(self.audio.get_device_count()):
 			print(self.audio.get_device_info_by_index(i))
@@ -276,8 +276,8 @@ class Microphone():
 	def get_audio(self):
 		self.stream.start_stream()
 		t_end = time.time() + 20
-		while(time.time() < t_end): #record for 20 seconds
-			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False) #get audio
+		while(time.time() < t_end): # record for 20 seconds
+			data = self.stream.read(self.frames_per_buffer, exception_on_overflow = False) # get audio
 			self.audio_frames.append(data) 
 
 		self.stream.stop_stream()
@@ -286,7 +286,7 @@ class Microphone():
 		waveFile.setnchannels(self.channels)
 		waveFile.setsampwidth(self.audio.get_sample_size(self.format))
 		waveFile.setframerate(self.rate)
-		waveFile.writeframes(b''.join(self.audio_frames)) #write to file
+		waveFile.writeframes(b''.join(self.audio_frames)) # write to file
 		waveFile.close()
 
 	def start(self):
@@ -295,7 +295,7 @@ class Microphone():
 ```
 recorder.py:
 ```python
-#import libraries
+# import libraries
 import threading
 import os
 import time
