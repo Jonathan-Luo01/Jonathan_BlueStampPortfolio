@@ -17,7 +17,7 @@ object_classifier = cv2.CascadeClassifier("models/upperbody_recognition_model.xm
 
 # App Globals for viewing live video feed
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' # Change username and password
 app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
 app.config['BASIC_AUTH_FORCE'] = True
 
@@ -29,18 +29,18 @@ def check_for_objects():
 	while True:
 		try:
 			frame, found_obj = video_camera.get_object(object_classifier)
-			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
+			if found_obj and (time.time() - last_epoch) > email_update_interval: # check if enough time is elapsed and if object is found
 				last_epoch = time.time()
 				print("Sending email...")
-        			sendImage(frame) #Send image
+        			sendImage(frame) # Send image
         			record(video_camera, mic)
-				sendVideo() #Send video
+				sendVideo() # Send video
 				print("done!")
 		except Exception as e:
-			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			print("Error sending email: ", __type(e).__name__, e) # Return exception
 			
 
-#launch basic server 
+# launch basic server 
 @app.route('/')
 @basic_auth.required 
 def index():
@@ -54,14 +54,14 @@ def code():
 def about():
 	return render_template('about.html')
 
-#return frame
+# return frame
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-#Generate video feed
+# Generate video feed
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(video_camera),
