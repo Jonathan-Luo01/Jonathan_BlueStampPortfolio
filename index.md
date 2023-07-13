@@ -410,7 +410,7 @@ object_classifier = cv2.CascadeClassifier("models/fullbody_recognition_model.xml
 
 # App Globals for viewing live video feed
 app = Flask(__name__)
-app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' #Change username and password
+app.config['BASIC_AUTH_USERNAME'] = 'DEFAULT_USERNAME' # Change username and password
 app.config['BASIC_AUTH_PASSWORD'] = 'DEFAULT_PASSWORD'
 app.config['BASIC_AUTH_FORCE'] = True
 
@@ -422,29 +422,29 @@ def check_for_objects():
 	while True:
 		try:
 			frame, found_obj = video_camera.get_object(object_classifier)
-			if found_obj and (time.time() - last_epoch) > email_update_interval: #check if enough time is elapsed and if object is found
+			if found_obj and (time.time() - last_epoch) > email_update_interval: # check if enough time is elapsed and if object is found
 				last_epoch = time.time()
 				print("Sending email...") 
-				sendEmail(frame) #Call email function
+				sendEmail(frame) # Call email function
 				print("done!")
 		except Exception as e:
-			print("Error sending email: ", __type(e).__name__, e) #Return exception
+			print("Error sending email: ", __type(e).__name__, e) # Return exception
 			
 
-#launch basic server 
+# launch basic server 
 @app.route('/')
 @basic_auth.required 
 def index():
     return render_template('index.html')
 
-#return frame
+# return frame
 def gen(camera):
     while True:
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
-#Generate video feed
+# Generate video feed
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(video_camera),
@@ -454,40 +454,40 @@ if __name__ == '__main__':
     t = threading.Thread(target=check_for_objects, args=())
     t.daemon = True
     t.start() 
-    app.run(host='0.0.0.0', debug=False) #make it accessible to every device on the network
+    app.run(host='0.0.0.0', debug=False) # make it accessible to every device on the network
 ```
 Camera:
 ```python
-#import libraries
+# import libraries
 import cv2
 import imutils
 import time
 import numpy as np
 
 class VideoCamera(object):
-    #camera constructor
+    # camera constructor
     def __init__(self, flip = False):
-        self.vs = cv2.VideoCapture(0) #use cv2's video capture function
+        self.vs = cv2.VideoCapture(0) # use cv2's video capture function
         self.flip = flip
         time.sleep(2.0)
 
-    #delete camera object
+    # delete camera object
     def __del__(self):
         self.vs.stop()
 
-    #flips camera object
+    # flips camera object
     def flip_if_needed(self, frame):
         if self.flip:
             return np.flip(frame, 0)
         return frame
 
-    #Return a single frame taken by the camera
+    # Return a single frame taken by the camera
     def get_frame(self):
         ret, frame = self.vs.read()
         ret, jpeg = cv2.imencode('.jpg', frame)
         return jpeg.tobytes()
 
-    #Look for an object and return image
+    # Look for an object and return image
     def get_object(self, classifier):
         found_objects = False
         ret, frame = self.vs.read()
@@ -513,7 +513,7 @@ class VideoCamera(object):
 ```
 Mail:
 ```python
-#import libraries
+# import libraries
 import smtplib
 from email.mime.Multipart import MIMEMultipart
 from email.mime.Text import MIMEText
