@@ -93,7 +93,7 @@ class VideoCamera(object):
 ```
 mail.py:
 ```python
-#import libraries
+# import libraries
 import smtplib
 from email.mime.Multipart import MIMEMultipart
 from email.mime.Text import MIMEText
@@ -239,7 +239,7 @@ Since openCV's VideoCapture doesn't include audio, I also decided to combine the
 
 mic.py: 
 ```python
-#import libraries
+# import libraries
 import pyaudio 
 import wave
 import threading
