@@ -12,7 +12,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB camera to detect movin
 # Modifications 
 I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had more functions like a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
 
-camera.py:
+camera.py: I added the `get_video()` method to record a short video with open-cv.
 ```python
 # import libraries
 import cv2
@@ -91,7 +91,7 @@ class VideoCamera(object):
         ret, jpeg = cv2.imencode('.jpg', frame) 
         return (jpeg.tobytes(), found_objects)
 ```
-mail.py:
+mail.py: I imported MIMEBase and encoders to encode the file into base 64. I created a new method `sendVideo()` to send the video.
 ```python
 # import libraries
 import smtplib
@@ -165,7 +165,7 @@ def sendImage(image):
 	smtp.sendmail(fromEmail, toEmail, msgRoot.as_string())
 	smtp.quit()
 ```
-main.py:
+main.py: I called the `record()` method from `recorder.py` and `sendVideo()` method from `mail.py`.
 
 ```python
 # import libraries
@@ -237,7 +237,8 @@ if __name__ == '__main__':
 ```
 Since openCV's VideoCapture doesn't include audio, I also decided to combine the audio and video so that the user can hear what's happening at the time of the object detection. To achieve this, I added two new classes, mic.py and recorder.py, and installed pyaudio and wave.
 
-mic.py: 
+mic.py: I first set up pyaudio in the default `__init__()` method. The parameters are different for every device, so I found every device connected to my computer and looked for the USB microphone and its parameters. The `get_audio()` method records a short twenty-second audio clip with pyaudio to read the audio and wave to write to the audio file. 
+
 ```python
 # import libraries
 import pyaudio 
@@ -293,7 +294,8 @@ class Microphone():
 		audio_thread = threading.Thread(target=self.get_audio)
 		audio_thread.start()
 ```
-recorder.py:
+recorder.py: I used multithreading to record audio and video at the same time. After the threads finish, I use ffmpeg to re-encode the video if it does not match the intended fps, and then combine the audio and video into one .avi file. The `clean_up_files()` method removes the old audio and video files to clear up space and allows ffmpeg to work automatically.
+
 ```python
 # import libraries
 import threading
@@ -579,6 +581,8 @@ def sendEmail(image):
 
 # Starter Project
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WCWzYgzLuSQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+Here is the link to my starter project kit: <a href="https://www.adafruit.com/product/5237"> Link </a>
 
 My first project was the Mini Cat Lamp. This project uses a simple circuit which was soldered together to create a mini cat that has an LED on its back that lights up when it becomes dark. In this project, I learned how to properly use tools for soldering and apply what I learned to a real-life creation. I first had to completely assemble the cat body board. I inserted the LED, transistor, resistor, and photoresistor into the cat body board. Then, I proceeded to use the soldering iron to solder each of these parts into the board. At first, I was unfamiliar with soldering, and so the initial soldering was messy, requiring me to clean up the solder left outside the pins. The most important part was the photoresistor, which would limit the electricity flow if light was detected. 
 
