@@ -579,6 +579,10 @@ def sendEmail(image):
 | Micro SD Card | Transfer Raspberry Pi data | $17.09 | <a href="https://www.amazon.com/Amazon-Basics-microSDXC-Memory-Adapter/dp/B08TJRVWV1"> Link </a> |
 |:--:|:--:|:--:|:--:|
 
+# Guides
+<a href="https://www.hackster.io/hackershack/smart-security-camera-90d7bd#toc-code-6/"> Hackershack </a>
+<a href="https://pyimagesearch.com/2016/04/18/install-guide-raspberry-pi-3-raspbian-jessie-opencv-3/"> OpenCV Download </a>
+
 # Starter Project
 <iframe width="560" height="315" src="https://www.youtube.com/embed/WCWzYgzLuSQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
