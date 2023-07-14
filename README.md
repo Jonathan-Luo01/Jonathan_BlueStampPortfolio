@@ -115,6 +115,8 @@ Note: The video stream will not start automatically on startup. To start the vid
 sudo nano -w /etc/rc.local
 ```
 
+This allows the program to start up automatically when power is connected to your Raspberry Pi.
+
 -----
 
 File info:
