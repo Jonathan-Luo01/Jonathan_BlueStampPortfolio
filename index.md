@@ -15,8 +15,7 @@ This project uses a Raspberry Pi Zero Wireless and an USB camera to detect movin
 I created a simple security camera that detects motion and sends a notification via email to the user, but wouldn't it be even better if it had more functions like a modern camera? Previously, the camera only sends an image of the object in the email, but I also wanted to send a short video so the intruder's actions could be recorded. Here are each of the modifications I made to each class in order to add a video.
 
 camera.py: I added the `get_video()` method to record a short video with open-cv.
-<pre style = "wraparound: #fdfdfd; border: none; height: 40pc">
-	<code>
+```python
 # import libraries
 import cv2
 import imutils
@@ -93,8 +92,8 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame) 
         return (jpeg.tobytes(), found_objects)
-	</code>
-</pre>
+```
+
 mail.py: I imported MIMEBase and encoders to encode the file into base 64. I created a new method `sendVideo()` to send the video.
 ```python
 # import libraries
