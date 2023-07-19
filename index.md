@@ -16,6 +16,7 @@ I created a simple security camera that detects motion and sends a notification 
 
 camera.py: I added the `get_video()` method to record a short video with open-cv.
 <pre style = "wraparound: #fdfdfd; border: none; height: 40pc">
+	<code>
 # import libraries
 import cv2
 import imutils
@@ -92,7 +93,7 @@ class VideoCamera(object):
 
         ret, jpeg = cv2.imencode('.jpg', frame) 
         return (jpeg.tobytes(), found_objects)
-
+	</code>
 </pre>
 mail.py: I imported MIMEBase and encoders to encode the file into base 64. I created a new method `sendVideo()` to send the video.
 ```python
